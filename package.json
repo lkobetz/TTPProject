@@ -1,0 +1,26 @@
+{
+  "name": "ttpproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lkobetz/TTPProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lkobetz/TTPProject/issues"
+  },
+  "homepage": "https://github.com/lkobetz/TTPProject#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.18.2",
+    "sequelize": "^5.21.5",
+    "volleyball": "^1.5.1"
+  }
+}

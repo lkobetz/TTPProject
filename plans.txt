@@ -4,15 +4,15 @@ Saturday:
 
     // Initialization:
 
-    1. git init
-    2. npm init
+    1. git init *
+    2. npm init *
     3. Create a database in PostgreSQL with a table to store user's id, name, email, password, and cash and a table to store all transactions, including userId, name, number of shares (whole numbers), price at time of sale
 
     // Backend:
 
-    1. install express, set up a server
-    2. install Sequelize
-    3. create a USER sequelize model with id, name, email, password, and cash (default $5000) fields
+    1. install express, set up a server *
+    2. install Sequelize *
+    3. create a USER sequelize model with id, name, email, password, and cash (default $5000) fields *
     4. add hook to ensure user can only register once with the same email (or put it in express route?)
     5. create a TRANSACTION sequelize model including userId, name, number of shares (whole numbers), price at time of sale
     6. create associations - transaction belongs to user?
