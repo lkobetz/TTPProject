@@ -1,0 +1,47 @@
+To Do:
+
+Saturday:
+
+    // Initialization:
+
+    1. git init
+    2. npm init
+    3. Create a database in PostgreSQL with a table to store user's id, name, email, password, and cash and a table to store all transactions, including userId, name, number of shares (whole numbers), price at time of sale
+
+    // Backend:
+
+    1. install express, set up a server
+    2. install Sequelize
+    3. create a USER sequelize model with id, name, email, password, and cash (default $5000) fields
+    4. add hook to ensure user can only register once with the same email (or put it in express route?)
+    5. create a TRANSACTION sequelize model including userId, name, number of shares (whole numbers), price at time of sale
+    6. create associations - transaction belongs to user?
+
+Monday:
+
+    7. create routes for:
+        - get (all logged in user's transactions)
+        - get (user's profile page with list of stocks user owns and their current values, after verifying user's credentials)
+        - post (new user in database)
+        - post (new transaction in transactions)
+
+    // Frontend:
+
+    1. install create-react-app
+    2. install axios
+    3. create a routes file
+    4. add front end routes for register / login (homepage), user's portfolio and user's transactions
+
+Tuesday:
+
+    5. login / register has form that posts a new user in the database, or gets the proper user (both using axios)
+    6. user portfolio renders stock info (name, number of shares, current price of all shares combined(?)) from transactions with the user's ID
+    7. user transactions renders list of stocks user bought along with price of each at time of purchase
+    8. conditionally render font color of stock symbols and current prices to:
+        • Display red when the current price is less than the day’s open price.
+        • Display grey when the current price is equal to the day’s open price.
+        • Display green when the current price is greater than the day’s open price.
+
+    // Deployment:
+
+    1. deploy with heroku
