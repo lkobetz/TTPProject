@@ -1,21 +1,17 @@
 const Sequelize = require("sequelize");
 const db = require("./db");
 
-module.exports = db.define("users", {
+module.exports = db.define("transactions", {
   name: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  cash: {
+  quantity: {
     type: Sequelize.INTEGER,
-    defaultValue: 5000
+    allowNull: false
+  },
+  price: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 });
