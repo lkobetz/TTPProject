@@ -15,7 +15,7 @@ Saturday:
     3. create a USER sequelize model with id, name, email, password, and cash (default $5000) fields *
     4. add hook to ensure user can only register once with the same email (or put it in express route?)
     5. create a TRANSACTION sequelize model including userId, name, number of shares (whole numbers), price at time of sale *
-    6. create associations - transaction belongs to user?
+    6. create associations - transaction belongs to user? *
 
 Monday:
 

@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const db = require("./db");
+const db = require("../db");
 
 module.exports = db.define("transactions", {
   name: {
@@ -11,7 +11,7 @@ module.exports = db.define("transactions", {
     allowNull: false
   },
   price: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DECIMAL(10, 2),
     allowNull: false
   }
 });

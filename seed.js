@@ -1,13 +1,13 @@
 const db = require("./server/db/db");
 const { green, red } = require("chalk");
-const User = require("./server/db/User");
-const Transaction = require("./server/db/Transaction");
+const { User } = require("./server/db/associations");
+const { Transaction } = require("./server/db/associations");
 
 const users = [
   {
-    name: "Steve",
-    email: "steve@email.com",
-    password: "stevespassword"
+    name: "Sarah",
+    email: "sarah@email.com",
+    password: "sarahspassword"
   }
 ];
 
