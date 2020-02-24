@@ -13,17 +13,17 @@ Saturday:
     1. install express, set up a server *
     2. install Sequelize *
     3. create a USER sequelize model with id, name, email, password, and cash (default $5000) fields *
-    4. add hook to ensure user can only register once with the same email (or put it in express route?)
+    4. add hook to ensure user can only register once with the same email (or put it in express route?) ??
     5. create a TRANSACTION sequelize model including userId, name, number of shares (whole numbers), price at time of sale *
     6. create associations - transaction belongs to user? *
 
 Monday:
 
     7. create routes for:
-        - get (all logged in user's transactions)
-        - get (user's profile page with list of stocks user owns and their current values, after verifying user's credentials)
-        - post (new user in database)
-        - post (new transaction in transactions)
+        - get (all logged in user's transactions, incl. type of transaction (buy), name of stock, quantity, and price at time of purchase) *
+        - get (user's profile page with list of stocks user owns and their current values, after verifying user's credentials) *
+        - post (new user in database, and add user to session) *
+        - post (new transaction in transactions) *
 
     // Frontend:
 

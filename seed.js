@@ -15,7 +15,8 @@ const transactions = [
   {
     name: "cool stock",
     quantity: 5,
-    price: 1000
+    price: 1000,
+    userId: 1
   }
 ];
 
