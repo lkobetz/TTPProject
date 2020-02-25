@@ -136,12 +136,7 @@ router.post("/:id/transactions", async (req, res, next) => {
     // save the result of the api call as stockToAdd
     const tickerSymbol = req.body.ticker;
     // this url doesn't work, but hardcoding it does
-    const url =
-      "https://sandbox.iexapis.com/stable/stock/" +
-      tickerSymbol +
-      "/financials/?token=" +
-      tpApiToken +
-      "&period=annual";
+    const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/financials/?token=${tpApiToken}&period=annual`;
     apiHelper
       .make_API_call(url)
       .then(response => {

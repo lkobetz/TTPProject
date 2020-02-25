@@ -30,7 +30,7 @@ Monday:
     1. install create-react-app
     2. install axios
     3. create a routes file
-    4. add front end routes for register / login (homepage), user's portfolio and user's transactions
+    4. add front end routes and components for register / login (homepage), user's portfolio and user's transactions
 
 Tuesday:
 
