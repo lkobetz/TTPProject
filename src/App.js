@@ -1,7 +1,9 @@
 import React from "react";
 import "./App.css";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 import Login from "./Login";
+// import UserPortfolio from "./UserPortfolio";
 
 class App extends React.Component {
   constructor(props) {
@@ -9,9 +11,9 @@ class App extends React.Component {
     this.state = {
       toggle: false,
       userType: "",
-      status: false
+      user: null
     };
-    this.changeUserStatus = this.changeUserStatus.bind(this);
+    this.changeUser = this.changeUser.bind(this);
   }
   async getResponse(info) {
     const { data } = await axios.post("/api/login", info);
@@ -21,8 +23,8 @@ class App extends React.Component {
     this.setState({ toggle: !this.state.toggle });
     this.setState({ userType: user });
   }
-  changeUserStatus() {
-    this.setState({ status: !this.state.status });
+  changeUser(loggedInUser) {
+    this.setState({ user: loggedInUser });
   }
   render() {
     console.log(this.state);
@@ -31,12 +33,14 @@ class App extends React.Component {
         <button onClick={() => this.toggleFunc("new")}>Register</button>
         <button onClick={() => this.toggleFunc("existing")}>Login</button>
         {this.state.toggle && (
-          <Login
-            userType={this.state.userType}
-            changeUserStatus={this.changeUserStatus}
-          />
+          <Login userType={this.state.userType} changeUser={this.changeUser} />
         )}
-        {this.state.status && <h3>navigate to user's profile</h3>}
+        {this.state.user && (
+          <Redirect
+            to={`/${this.state.user.id}`}
+            user={this.state.user}
+          ></Redirect>
+        )}
       </div>
     );
   }

@@ -104,18 +104,15 @@ router.get("/:id", async (req, res, next) => {
     const user = await User.findOne({
       where: {
         id: req.session.user.id
+      },
+      include: {
+        model: Transaction
       }
     });
     if (!user) {
       req.send("access denied");
     } else {
-      const userStocks = await Transaction.findAll({
-        where: {
-          userId: user.id
-        }
-      });
-      // on the front end, make an api request for each stock to get its current price
-      res.send(userStocks);
+      res.send(user);
     }
   } catch (err) {
     next(err);
