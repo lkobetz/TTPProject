@@ -4,6 +4,8 @@ var session = require("express-session");
 var cookieParser = require("cookie-parser");
 const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
+const apiHelper = require("./apiHelper");
+const { tpApiToken } = require("../../secrets");
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -30,13 +32,14 @@ router.get("/register", async (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   try {
-    if (!req.body.id || !req.body.password) {
+    if (!req.body.name || !req.body.password) {
       res.status("400");
       res.send("Invalid details!");
     } else {
       const foundUser = await User.findOne({
         where: {
-          id: req.body.id
+          name: req.body.name,
+          password: req.body.password
         }
       });
       if (foundUser) {
@@ -49,7 +52,7 @@ router.post("/register", async (req, res, next) => {
         });
         req.session.user = newUser;
         const userId = newUser.id;
-        res.redirect("/:userId");
+        res.redirect("/api/:userId");
       }
     }
   } catch (err) {
@@ -128,16 +131,32 @@ router.post("/:id/transactions", async (req, res, next) => {
   try {
     // req.body includes ticker name from form and
     // call the api database and request info for the stock with the passed in ticker name?
-    // sandbox testing: https://sandbox.iexapis.com/stable/stock/{tickersymbol}/financials/?token=pk_992c29e7c7ed4ee7b2f99343aab3d4f4&period=annual
+    // sandbox testing (with publishable token): https://sandbox.iexapis.com/stable/stock/{tickersymbol}/financials/?token=Tpk_992c29e7c7ed4ee7b2f99343aab3d4f4&period=annual
     // production is mounted on: https://cloud.iexapis.com/
     // save the result of the api call as stockToAdd
-    const newTransaction = await Transaction.create({
-      name: req.body.name,
-      price: stockToAdd.price,
-      quantity: req.body.quantity,
-      userId: req.user.id
-    });
-    res.send(newTransaction);
+    const tickerSymbol = req.body.ticker;
+    // this url doesn't work, but hardcoding it does
+    const url =
+      "https://sandbox.iexapis.com/stable/stock/" +
+      tickerSymbol +
+      "/financials/?token=" +
+      tpApiToken +
+      "&period=annual";
+    apiHelper
+      .make_API_call(url)
+      .then(response => {
+        res.json(response);
+      })
+      .catch(error => {
+        res.send(error);
+      });
+    // const newTransaction = await Transaction.create({
+    //   name: req.body.name,
+    //   price: stockToAdd.price,
+    //   quantity: req.body.quantity,
+    //   userId: req.user.id
+    // });
+    // res.send(newTransaction);
   } catch (err) {
     next(err);
   }
