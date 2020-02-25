@@ -5,14 +5,12 @@ var cookieParser = require("cookie-parser");
 const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
-const { tpApiToken } = require("../../secrets");
+const { tpApiToken, sessionSecret } = require("../../secrets");
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(cookieParser());
-router.use(
-  session({ secret: "change this secret later and store it in a secret place" })
-);
+router.use(session({ secret: sessionSecret }));
 
 router.get("/", async (req, res, next) => {
   try {
@@ -51,8 +49,7 @@ router.post("/register", async (req, res, next) => {
           password: req.body.password
         });
         req.session.user = newUser;
-        const userId = newUser.id;
-        res.redirect("/api/:userId");
+        res.redirect("/api/" + req.session.user.id);
       }
     }
   } catch (err) {
@@ -92,6 +89,14 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+router.post("/logout", async (req, res, next) => {
+  try {
+    session.destroy();
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   try {
     // verify that username and password match
@@ -101,13 +106,17 @@ router.get("/:id", async (req, res, next) => {
         id: req.session.user.id
       }
     });
-    const userStocks = await Transaction.findAll({
-      where: {
-        userId: user.id
-      }
-    });
-    // on the front end, make an api request for each stock to get its current price
-    res.send(userStocks);
+    if (!user) {
+      req.send("access denied");
+    } else {
+      const userStocks = await Transaction.findAll({
+        where: {
+          userId: user.id
+        }
+      });
+      // on the front end, make an api request for each stock to get its current price
+      res.send(userStocks);
+    }
   } catch (err) {
     next(err);
   }
@@ -118,7 +127,7 @@ router.get("/:id/transactions", async (req, res, next) => {
     // front end will display type of transaction (buy), name of stock, quantity, and price at time of purchase
     const userTransactions = await Transaction.findAll({
       where: {
-        userId: user.id
+        userId: req.session.user.id
       }
     });
     res.send(userTransactions);
@@ -130,7 +139,6 @@ router.get("/:id/transactions", async (req, res, next) => {
 router.post("/:id/transactions", async (req, res, next) => {
   try {
     // production is mounted on: https://cloud.iexapis.com/
-    // save the result of the api call as stockToAdd
     const tickerSymbol = req.body.ticker;
     const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
     const stockToAdd = await apiHelper
