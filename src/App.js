@@ -20,9 +20,9 @@ class App extends React.Component {
         <button
           onClick={() =>
             this.getResponse({
-              name: "Blob",
-              email: "blob@blob.com",
-              password: "blobspassword"
+              name: "Banana",
+              email: "banana@bing.com",
+              password: "banananaspassword"
             })
           }
         >

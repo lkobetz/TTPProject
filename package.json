@@ -1,32 +1,49 @@
 {
   "name": "ttpproject",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node seed.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lkobetz/TTPProject.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lkobetz/TTPProject/issues"
-  },
-  "homepage": "https://github.com/lkobetz/TTPProject#readme",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.1",
+    "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "concurrently": "^4.1.2",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "npm-run-all": "^4.1.5",
     "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.4.0",
     "request": "^2.88.2",
     "sequelize": "^5.21.5",
     "volleyball": "^1.5.1"
-  }
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "node main.js",
+    "dev": "run-p server start"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:1337"
 }
