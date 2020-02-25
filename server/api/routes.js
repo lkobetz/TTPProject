@@ -129,29 +129,27 @@ router.get("/:id/transactions", async (req, res, next) => {
 
 router.post("/:id/transactions", async (req, res, next) => {
   try {
-    // req.body includes ticker name from form and
-    // call the api database and request info for the stock with the passed in ticker name?
-    // sandbox testing (with publishable token): https://sandbox.iexapis.com/stable/stock/{tickersymbol}/financials/?token=Tpk_992c29e7c7ed4ee7b2f99343aab3d4f4&period=annual
     // production is mounted on: https://cloud.iexapis.com/
     // save the result of the api call as stockToAdd
     const tickerSymbol = req.body.ticker;
-    // this url doesn't work, but hardcoding it does
-    const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/financials/?token=${tpApiToken}&period=annual`;
-    apiHelper
+    const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
+    const stockToAdd = await apiHelper
       .make_API_call(url)
-      .then(response => {
-        res.json(response);
-      })
+      // the following will send the entire stockToAdd object
+      // .then(response => {
+      //   res.json(response);
+      // })
       .catch(error => {
         res.send(error);
       });
-    // const newTransaction = await Transaction.create({
-    //   name: req.body.name,
-    //   price: stockToAdd.price,
-    //   quantity: req.body.quantity,
-    //   userId: req.user.id
-    // });
-    // res.send(newTransaction);
+    const newTransaction = await Transaction.create({
+      name: stockToAdd.symbol,
+      price: stockToAdd.latestPrice,
+      quantity: req.body.quantity,
+      // change the following to req.session.user.id
+      userId: req.params.id
+    });
+    res.send(newTransaction);
   } catch (err) {
     next(err);
   }
