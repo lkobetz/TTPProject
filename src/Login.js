@@ -69,12 +69,16 @@ class Login extends React.Component {
       const response = await axios.post("/api/register", this.state);
       this.resetForm();
       if (response.status === 200) {
+        const id = response.data.id;
+        await window.sessionStorage.setItem("userId", id);
         this.props.changeUser(response.data);
       }
     } else if (this.props.userType === "existing") {
       const response = await axios.post("/api/login", this.state);
       this.resetForm();
       if (response.status === 200) {
+        const id = response.data.id;
+        await window.sessionStorage.setItem("userId", id);
         this.props.changeUser(response.data);
       }
     }
