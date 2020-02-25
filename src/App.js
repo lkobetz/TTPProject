@@ -37,8 +37,10 @@ class App extends React.Component {
         )}
         {this.state.user && (
           <Redirect
-            to={`/${this.state.user.id}`}
-            user={this.state.user}
+            to={{
+              pathname: `/${this.state.user.id}`,
+              state: { user: this.state.user }
+            }}
           ></Redirect>
         )}
       </div>

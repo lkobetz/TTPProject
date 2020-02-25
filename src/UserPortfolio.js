@@ -7,11 +7,8 @@ class UserPortfolio extends React.Component {
     this.state = {};
   }
   render() {
-    return (
-      <div className="App">
-        <h1>We shall now render the user's portfolio</h1>
-      </div>
-    );
+    console.log(this.props.location.state.user);
+    return <div className="App"></div>;
   }
 }
 
