@@ -1,5 +1,7 @@
 import React from "react";
 import axios from "axios";
+import NavBar from "./NavBar";
+import StockPortfolio from "./StockPortfolio";
 
 class UserPortfolio extends React.Component {
   constructor(props) {
@@ -18,10 +20,11 @@ class UserPortfolio extends React.Component {
   render() {
     return (
       <div className="App">
+        <NavBar />
         {this.state.user && <h3>{this.state.user.name}</h3>}
-        {/* <NavBar />
+
         <StockPortfolio />
-        <BuyStockForm /> */}
+        {/*<BuyStockForm /> */}
         {/* this component needs three nested components:
         a navbar to display either portfolio or transactions
         one with the stocks owned
