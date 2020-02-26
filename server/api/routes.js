@@ -154,7 +154,23 @@ router.post("/:id", async (req, res, next) => {
       // change the following to req.session.user.id
       userId: req.params.id
     });
-    res.send(newTransaction);
+    const user = await User.findOne({
+      where: {
+        id: req.body.user.id
+      }
+    });
+    const cash = parseInt(user.cash);
+    const price = parseInt(stockToAdd.latestPrice);
+    const quantity = parseInt(req.body.quantity);
+    const updatedCash = cash - price * quantity;
+    const updatedUser = await user.update({
+      cash: updatedCash
+    });
+    if (updatedUser.cash > 0) {
+      res.send(newTransaction);
+    } else {
+      res.sendStatus(400);
+    }
   } catch (err) {
     next(err);
   }
