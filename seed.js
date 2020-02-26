@@ -7,7 +7,7 @@ const users = [
   {
     name: "Sarah",
     email: "sarah@email.com",
-    password: "sarahspassword"
+    password: "123"
   }
 ];
 
@@ -15,7 +15,7 @@ const transactions = [
   {
     name: "cool stock",
     quantity: 5,
-    price: 1000,
+    price: 100,
     userId: 1
   }
 ];

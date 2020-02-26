@@ -7,6 +7,7 @@ class BuyStockForm extends React.Component {
     this.state = {
       ticker: "",
       quantity: 0,
+      price: 0,
       user: null
     };
   }
@@ -55,6 +56,7 @@ class BuyStockForm extends React.Component {
   }
 
   async handleSubmit(event) {
+    // add an axios.put to handle the payment
     event.preventDefault();
     let contains = false;
     for (let i = 0; i < this.state.user.transactions.length; i++) {
@@ -64,13 +66,11 @@ class BuyStockForm extends React.Component {
     }
     if (contains) {
       const response = await axios.put(`/api/${this.props.userId}`, this.state);
-      console.log("response.data from axios", response.data);
     } else {
       const response = await axios.post(
         `/api/${this.props.userId}`,
         this.state
       );
-      console.log("response.data from axios", response.data);
     }
     // if (response.data.status === "success") {
     //   alert(

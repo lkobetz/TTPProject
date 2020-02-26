@@ -174,6 +174,36 @@ router.put("/:id", async (req, res, next) => {
     await transaction.update({
       quantity: newQuantity
     });
+    // handle the user's payment
+    const tickerSymbol = req.body.ticker;
+    const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
+    const stockToAdd = await apiHelper
+      .make_API_call(url)
+      // the following will send the entire stockToAdd object
+      // .then(response => {
+      //   res.json(response);
+      // })
+      .catch(error => {
+        res.send(error);
+      });
+    const user = await User.findOne({
+      where: {
+        id: req.body.user.id
+      }
+    });
+    const cash = parseInt(user.cash);
+    const price = parseInt(stockToAdd.latestPrice);
+    const quantity = parseInt(req.body.quantity);
+    const updatedCash = cash - price * quantity;
+    const updatedUser = await user.update({
+      cash: updatedCash
+    });
+    if (updatedUser.cash > 0) {
+      // is 400 the right status?
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
+    }
   } catch (err) {
     next(err);
   }
