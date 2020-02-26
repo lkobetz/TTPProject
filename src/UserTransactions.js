@@ -23,20 +23,22 @@ class UserTransactions extends React.Component {
             <NavBar />
             <div id={"portfolio_container"}>
               <div id={"portfolio_body"}>
-                <div className="App">
-                  <h2>Transaction History:</h2>
+                <div id={"transaction_container"}>
+                  <h2 id={"transactions_list"}>Transaction History:</h2>
                   {this.state.user && (
-                    <h3>
+                    <div>
                       {this.state.user.transactions.map(stock => (
                         <div className={"stock"}>
-                          <h3>BUY</h3>
-                          <h3>{stock.name}</h3>
-                          <h3>Shares: {stock.quantity}</h3>
-                          <h3>@</h3>
-                          <h3>${stock.price}</h3>
+                          <h3 className={"stock_item"}>BUY</h3>
+                          <h3 className={"stock_item"}>{stock.name}</h3>
+                          <h3 className={"stock_item"}>
+                            Shares: {stock.quantity}
+                          </h3>
+                          <h3 className={"stock_item"}>@</h3>
+                          <h3 className={"stock_item"}>${stock.price}</h3>
                         </div>
                       ))}
-                    </h3>
+                    </div>
                   )}
                 </div>
               </div>

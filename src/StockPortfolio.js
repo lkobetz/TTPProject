@@ -17,9 +17,9 @@ class StockPortfolio extends React.Component {
   }
   render() {
     return (
-      <div className="App">
+      <div className={"portfolio_item"}>
         {this.state.user && (
-          <h3>
+          <div id={"stock_list"}>
             {this.state.user.transactions.map(stock => (
               <SingleStock
                 stock={stock}
@@ -27,7 +27,7 @@ class StockPortfolio extends React.Component {
                 key={stock.id}
               />
             ))}
-          </h3>
+          </div>
         )}
       </div>
     );

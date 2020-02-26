@@ -19,7 +19,11 @@ class BuyStockForm extends React.Component {
   }
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)} method="POST">
+      <form
+        className={"portfolio_item"}
+        onSubmit={this.handleSubmit.bind(this)}
+        method="POST"
+      >
         <div>
           {this.state.user && <h3>Cash: ${this.state.user.cash}</h3>}
           <input

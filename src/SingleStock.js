@@ -26,12 +26,12 @@ class SingleStock extends React.Component {
   render() {
     const stockCost = this.getTotalCostOfStock();
     return (
-      <div className="App">
+      <div id="stock_container">
         <div className={"stock"}>
-          <h3>{this.props.stock.name}</h3>
-          <h3>Shares: {this.props.stock.quantity}</h3>
-          <h3>=</h3>
-          <h3>${stockCost}</h3>
+          <h3 className={"stock_item"}>{this.props.stock.name}</h3>
+          <h3 className={"stock_item"}>{this.props.stock.quantity} Shares</h3>
+          <h3 className={"stock_item"}>=</h3>
+          <h3 className={"stock_item"}>${stockCost}</h3>
         </div>
       </div>
     );
