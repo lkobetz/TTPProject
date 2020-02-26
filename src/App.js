@@ -27,7 +27,6 @@ class App extends React.Component {
     this.setState({ user: loggedInUser });
   }
   render() {
-    console.log(this.state);
     return (
       <div className="App">
         <button onClick={() => this.toggleFunc("new")}>Register</button>

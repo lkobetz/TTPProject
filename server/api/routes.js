@@ -133,7 +133,7 @@ router.get("/:id/transactions", async (req, res, next) => {
   }
 });
 
-router.post("/:id/transactions", async (req, res, next) => {
+router.post("/:id", async (req, res, next) => {
   try {
     // production is mounted on: https://cloud.iexapis.com/
     const tickerSymbol = req.body.ticker;

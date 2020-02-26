@@ -64,7 +64,6 @@ class Login extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    // create another project in express and send this to that server
     if (this.props.userType === "new") {
       const response = await axios.post("/api/register", this.state);
       this.resetForm();
