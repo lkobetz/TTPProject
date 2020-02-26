@@ -17,23 +17,30 @@ class UserPortfolio extends React.Component {
     );
     this.setState({ user: data });
   }
-  addNewStock(stock) {}
+  getPriceOfAllStocks() {
+    let totalsOfEach = [];
+    this.state.user.transactions.forEach(stock => {
+      totalsOfEach.push(stock.price * stock.quantity);
+    });
+    return totalsOfEach.reduce((first, second) => {
+      return (first += second);
+    });
+  }
   render() {
     return (
       <div className="App">
         {this.state.user && (
           <div>
             <NavBar />
-            <StockPortfolio />
-            <BuyStockForm userId={this.state.user.id} />
-            {/* this component needs three nested components:
-        a navbar to display either portfolio or transactions
-        one with the stocks owned
-        (with the total price for all of their shares), makes an api call for
-        each stock to get its current price, then multiplies that price times
-        the quantity owned
-        one with a form to buy a new stock that makes an api
-        call to add that stock to the database */}
+            <div id={"portfolio_container"}>
+              <h1 id={"portfolio_header"}>
+                Total Value of My Stocks: {this.getPriceOfAllStocks()}
+              </h1>
+              <div id={"portfolio_body"}>
+                <StockPortfolio />
+                <BuyStockForm userId={this.state.user.id} />
+              </div>
+            </div>
           </div>
         )}
       </div>

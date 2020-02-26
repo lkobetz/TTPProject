@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import SingleStock from "./SingleStock";
 
 class StockPortfolio extends React.Component {
   constructor(props) {
@@ -12,7 +13,6 @@ class StockPortfolio extends React.Component {
     const { data } = await axios.get(
       `/api/${window.sessionStorage.getItem("userId")}`
     );
-    console.log(data);
     this.setState({ user: data });
   }
   render() {
@@ -21,7 +21,11 @@ class StockPortfolio extends React.Component {
         {this.state.user && (
           <h3>
             {this.state.user.transactions.map(stock => (
-              <h4>{stock.name}</h4>
+              <SingleStock
+                stock={stock}
+                user={this.state.user}
+                key={stock.id}
+              />
             ))}
           </h3>
         )}

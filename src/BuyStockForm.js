@@ -21,6 +21,7 @@ class BuyStockForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit.bind(this)} method="POST">
         <div>
+          {this.state.user && <h3>Cash: ${this.state.user.cash}</h3>}
           <input
             className={"form_item"}
             type="text"
@@ -72,14 +73,6 @@ class BuyStockForm extends React.Component {
         this.state
       );
     }
-    // if (response.data.status === "success") {
-    //   alert(
-    //     "Thank you! I have received your message and will get back to you shortly!"
-    //   );
-    //   this.resetForm();
-    // } else if (response.data.status === "fail") {
-    //   alert("Your message has failed to send.");
-    // }
     this.resetForm();
   }
   resetForm() {

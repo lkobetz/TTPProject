@@ -13,7 +13,7 @@ const users = [
 
 const transactions = [
   {
-    name: "cool stock",
+    name: "NFLX",
     quantity: 5,
     price: 100,
     userId: 1

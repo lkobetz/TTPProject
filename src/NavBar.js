@@ -23,10 +23,11 @@ class NavBar extends React.Component {
   getUser;
   render() {
     return (
-      <div>
+      <div id={"navbar"}>
         {this.state.user && (
           <nav id="navbar">
             <Link
+              className={"navbar_link"}
               params={"userPortfolio"}
               to={`/${this.state.user.id}`}
               style={{
@@ -40,6 +41,7 @@ class NavBar extends React.Component {
               <h5>Portfolio</h5>
             </Link>{" "}
             <Link
+              className={"navbar_link"}
               params={"userTransactions"}
               to={`/${this.state.user.id}/transactions`}
               style={{

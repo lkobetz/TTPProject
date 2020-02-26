@@ -119,6 +119,22 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/:id/apicall", async (req, res, next) => {
+  console.log(req.body);
+  const tickerSymbol = req.body.ticker;
+  const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
+  const stock = await apiHelper
+    .make_API_call(url)
+    // the following will send the entire stockToAdd object
+    // .then(response => {
+    //   res.json(response);
+    // })
+    .catch(error => {
+      res.send(error);
+    });
+  res.send(stock);
+});
+
 router.get("/:id/transactions", async (req, res, next) => {
   try {
     // front end will display type of transaction (buy), name of stock, quantity, and price at time of purchase
