@@ -160,4 +160,23 @@ router.post("/:id", async (req, res, next) => {
   }
 });
 
+router.put("/:id", async (req, res, next) => {
+  try {
+    // if the user already owns stock by this name, increment the quantity of the pre-existing stock
+    const transaction = await Transaction.findOne({
+      where: {
+        userId: req.body.user.id,
+        name: req.body.ticker
+      }
+    });
+    const formerQuantity = transaction.quantity;
+    const newQuantity = parseInt(formerQuantity) + parseInt(req.body.quantity);
+    await transaction.update({
+      quantity: newQuantity
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

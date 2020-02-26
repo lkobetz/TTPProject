@@ -29,12 +29,12 @@ Monday:
 
     1. install create-react-app *
     2. install axios *
-    3. create a routes file
-    4. add front end routes and components for register / login (homepage), user's portfolio and user's transactions
+    3. create a routes file *
+    4. add front end routes and components for register / login (homepage), user's portfolio and user's transactions *
 
 Tuesday:
 
-    5. login / register has form that posts a new user in the database, or gets the proper user (both using axios)
+    5. login / register has form that posts a new user in the database, or gets the proper user (both using axios) *
     6. user portfolio renders stock info (name, number of shares, current price of all shares combined(?)) from transactions with the user's ID
     7. user transactions renders list of stocks user bought along with price of each at time of purchase
     8. conditionally render font color of stock symbols and current prices to:

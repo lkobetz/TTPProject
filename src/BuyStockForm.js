@@ -6,8 +6,15 @@ class BuyStockForm extends React.Component {
     super(props);
     this.state = {
       ticker: "",
-      quantity: 0
+      quantity: 0,
+      user: null
     };
+  }
+  async componentDidMount() {
+    const { data } = await axios.get(
+      `/api/${window.sessionStorage.getItem("userId")}`
+    );
+    this.setState({ user: data });
   }
   render() {
     return (
@@ -49,8 +56,22 @@ class BuyStockForm extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const response = await axios.post(`/api/${this.props.userId}`, this.state);
-    console.log("response.data from axios", response.data);
+    let contains = false;
+    for (let i = 0; i < this.state.user.transactions.length; i++) {
+      if (this.state.user.transactions[i].name === this.state.ticker) {
+        contains = true;
+      }
+    }
+    if (contains) {
+      const response = await axios.put(`/api/${this.props.userId}`, this.state);
+      console.log("response.data from axios", response.data);
+    } else {
+      const response = await axios.post(
+        `/api/${this.props.userId}`,
+        this.state
+      );
+      console.log("response.data from axios", response.data);
+    }
     // if (response.data.status === "success") {
     //   alert(
     //     "Thank you! I have received your message and will get back to you shortly!"

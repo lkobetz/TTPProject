@@ -1,9 +1,7 @@
 import React from "react";
 import "./App.css";
-import axios from "axios";
 import { Redirect } from "react-router-dom";
 import Login from "./Login";
-// import UserPortfolio from "./UserPortfolio";
 
 class App extends React.Component {
   constructor(props) {
@@ -14,10 +12,6 @@ class App extends React.Component {
       user: null
     };
     this.changeUser = this.changeUser.bind(this);
-  }
-  async getResponse(info) {
-    const { data } = await axios.post("/api/login", info);
-    console.log(data);
   }
   toggleFunc(user) {
     this.setState({ toggle: !this.state.toggle });
