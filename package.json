@@ -30,7 +30,7 @@
     "eject": "react-scripts eject",
     "seed": "node seed.js",
     "server": "node main.js",
-    "start": "run-p react server"
+    "start": "run-p build react server"
   },
   "eslintConfig": {
     "extends": "react-app"
