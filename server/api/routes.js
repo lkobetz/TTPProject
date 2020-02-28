@@ -124,7 +124,7 @@ router.get("/:id", async (req, res, next) => {
 router.get("/:id/apicall", async (req, res, next) => {
   console.log(req.body);
   const tickerSymbol = req.body.ticker;
-  const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
+  const url = `https://cloud.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
   const stock = await apiHelper
     .make_API_call(url)
     // the following will send the entire stockToAdd object
@@ -154,8 +154,9 @@ router.get("/:id/transactions", async (req, res, next) => {
 router.post("/:id", async (req, res, next) => {
   try {
     // production is mounted on: https://cloud.iexapis.com/
+    // test is mounted on: https://sandbox.iexapis.com/
     const tickerSymbol = req.body.ticker;
-    const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
+    const url = `https://cloud.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
     const stockToAdd = await apiHelper
       .make_API_call(url)
       // the following will send the entire stockToAdd object
