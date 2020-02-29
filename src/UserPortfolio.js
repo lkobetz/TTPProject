@@ -8,8 +8,10 @@ class UserPortfolio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      stocksAdded: 0
     };
+    this.addStock = this.addStock.bind(this);
   }
   async componentDidMount() {
     const { data } = await axios.get(
@@ -32,6 +34,14 @@ class UserPortfolio extends React.Component {
       return 0;
     }
   }
+  // this was supposed to trigger a component rerender by updating the state
+  addStock() {
+    let newStocks = this.state.stocksAdded;
+    newStocks++;
+    this.setState({
+      stocksAdded: newStocks
+    });
+  }
   render() {
     return (
       <div className="App">
@@ -44,7 +54,10 @@ class UserPortfolio extends React.Component {
               </h1>
               <div id={"portfolio_body"}>
                 <StockPortfolio />
-                <BuyStockForm userId={this.state.user.id} />
+                <BuyStockForm
+                  userId={this.state.user.id}
+                  addStock={this.addStock}
+                />
               </div>
             </div>
           </div>

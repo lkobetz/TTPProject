@@ -78,6 +78,7 @@ class BuyStockForm extends React.Component {
     } else {
       await axios.post(`/api/${this.props.userId}`, this.state);
     }
+    this.props.addStock();
     this.resetForm();
   }
   resetForm() {

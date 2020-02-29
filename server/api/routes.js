@@ -6,9 +6,9 @@ const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
 // use secrets file for development and process.env vars for production
-// const { tpApiToken, sessionSecret } = require("../../secrets");
-const tpApiToken = process.env.pApiToken;
-const sessionSecret = process.env.sessionSecret;
+const { tpApiToken, sessionSecret } = require("../../secrets");
+// const tpApiToken = process.env.pApiToken;
+// const sessionSecret = process.env.sessionSecret;
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -123,7 +123,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.get("/:id/apicall", async (req, res, next) => {
-  console.log(req.body);
+  console.log("req.body:", req.body);
   const tickerSymbol = req.body.ticker;
   const url = `https://cloud.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
   const stock = await apiHelper
@@ -185,7 +185,6 @@ router.post("/:id", async (req, res, next) => {
     const updatedUser = await user.update({
       cash: updatedCash
     });
-    console.log("updatedUser.cash:", updatedUser.cash);
     if (updatedUser.cash > 0) {
       res.send(newTransaction);
     } else {
@@ -198,6 +197,8 @@ router.post("/:id", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   try {
+    // running this route gives the error: Uncaught (in promise) Error: Request failed with status code 400
+    console.log("made it to router.put");
     // if the user already owns stock by this name, increment the quantity of the pre-existing stock
     const transaction = await Transaction.findOne({
       where: {
@@ -212,7 +213,7 @@ router.put("/:id", async (req, res, next) => {
     });
     // handle the user's payment
     const tickerSymbol = req.body.ticker;
-    const url = `https://sandbox.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
+    const url = `https://cloud.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
     const stockToAdd = await apiHelper
       .make_API_call(url)
       // the following will send the entire stockToAdd object
@@ -234,10 +235,11 @@ router.put("/:id", async (req, res, next) => {
     const updatedUser = await user.update({
       cash: updatedCash
     });
+    console.log("updatedUser.cash:", updatedUser.cash);
     if (updatedUser.cash > 0) {
       res.sendStatus(200);
     } else {
-      res.sendStatus(400);
+      res.status(400).send("not enough cash!");
     }
   } catch (err) {
     next(err);

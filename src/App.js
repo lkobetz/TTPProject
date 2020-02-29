@@ -22,7 +22,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App">
+      <div id="login">
         <button onClick={() => this.toggleFunc("new")}>Register</button>
         <button onClick={() => this.toggleFunc("existing")}>Login</button>
         {this.state.toggle && (
