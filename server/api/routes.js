@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
+// use secrets file for development and process.env vars for production
 // const { tpApiToken, sessionSecret } = require("../../secrets");
 const tpApiToken = process.env.pApiToken;
 const sessionSecret = process.env.sessionSecret;
@@ -170,12 +171,11 @@ router.post("/:id", async (req, res, next) => {
       name: stockToAdd.symbol,
       price: stockToAdd.latestPrice,
       quantity: req.body.quantity,
-      // change the following to req.session.user.id
-      userId: req.params.id
+      userId: req.session.user.id
     });
     const user = await User.findOne({
       where: {
-        id: req.body.user.id
+        id: req.params.id
       }
     });
     const cash = parseInt(user.cash);
@@ -185,6 +185,7 @@ router.post("/:id", async (req, res, next) => {
     const updatedUser = await user.update({
       cash: updatedCash
     });
+    console.log("updatedUser.cash:", updatedUser.cash);
     if (updatedUser.cash > 0) {
       res.send(newTransaction);
     } else {
@@ -234,7 +235,6 @@ router.put("/:id", async (req, res, next) => {
       cash: updatedCash
     });
     if (updatedUser.cash > 0) {
-      // is 400 the right status?
       res.sendStatus(200);
     } else {
       res.sendStatus(400);

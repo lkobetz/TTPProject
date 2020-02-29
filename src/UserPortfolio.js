@@ -23,9 +23,11 @@ class UserPortfolio extends React.Component {
       this.state.user.transactions.forEach(stock => {
         totalsOfEach.push(stock.price * stock.quantity);
       });
-      return totalsOfEach.reduce((first, second) => {
-        return (first += second);
-      });
+      return totalsOfEach
+        .reduce((first, second) => {
+          return (first += second);
+        })
+        .toFixed(2);
     } else {
       return 0;
     }
@@ -38,7 +40,7 @@ class UserPortfolio extends React.Component {
             <NavBar />
             <div id={"portfolio_container"}>
               <h1 id={"portfolio_header"}>
-                Total Value of My Stocks: {this.getPriceOfAllStocks()}
+                Total Value of My Stocks: ${this.getPriceOfAllStocks()}
               </h1>
               <div id={"portfolio_body"}>
                 <StockPortfolio />
