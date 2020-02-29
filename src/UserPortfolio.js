@@ -19,12 +19,16 @@ class UserPortfolio extends React.Component {
   }
   getPriceOfAllStocks() {
     let totalsOfEach = [];
-    this.state.user.transactions.forEach(stock => {
-      totalsOfEach.push(stock.price * stock.quantity);
-    });
-    return totalsOfEach.reduce((first, second) => {
-      return (first += second);
-    });
+    if (this.state.user.transactions.length) {
+      this.state.user.transactions.forEach(stock => {
+        totalsOfEach.push(stock.price * stock.quantity);
+      });
+      return totalsOfEach.reduce((first, second) => {
+        return (first += second);
+      });
+    } else {
+      return 0;
+    }
   }
   render() {
     return (

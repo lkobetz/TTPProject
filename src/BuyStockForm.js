@@ -19,36 +19,40 @@ class BuyStockForm extends React.Component {
   }
   render() {
     return (
-      <form
-        className={"portfolio_item"}
-        onSubmit={this.handleSubmit.bind(this)}
-        method="POST"
-      >
-        <div>
-          {this.state.user && <h3>Cash: ${this.state.user.cash}</h3>}
-          <input
-            className={"form_item"}
-            type="text"
-            value={this.state.ticker}
-            placeholder={"Ticker Symbol"}
-            onChange={this.onTickerChange.bind(this)}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            className={"form_item"}
-            type="text"
-            value={this.state.quantity}
-            placeholder={"Quantity"}
-            onChange={this.onQuantityChange.bind(this)}
-          />
-        </div>{" "}
-        <br />
-        <button type="submit" className="submit_button">
-          Buy
-        </button>
-      </form>
+      <div>
+        {this.state.user && (
+          <form
+            className={"portfolio_item"}
+            onSubmit={this.handleSubmit.bind(this)}
+            method="POST"
+          >
+            <div>
+              {this.state.user && <h3>Cash: ${this.state.user.cash}</h3>}
+              <input
+                className={"form_item"}
+                type="text"
+                value={this.state.ticker}
+                placeholder={"Ticker Symbol"}
+                onChange={this.onTickerChange.bind(this)}
+              />
+            </div>
+            <br />
+            <div>
+              <input
+                className={"form_item"}
+                type="text"
+                value={this.state.quantity}
+                placeholder={"Quantity"}
+                onChange={this.onQuantityChange.bind(this)}
+              />
+            </div>{" "}
+            <br />
+            <button type="submit" className="submit_button">
+              Buy
+            </button>
+          </form>
+        )}
+      </div>
     );
   }
 
@@ -70,12 +74,9 @@ class BuyStockForm extends React.Component {
       }
     }
     if (contains) {
-      const response = await axios.put(`/api/${this.props.userId}`, this.state);
+      await axios.put(`/api/${this.props.userId}`, this.state);
     } else {
-      const response = await axios.post(
-        `/api/${this.props.userId}`,
-        this.state
-      );
+      await axios.post(`/api/${this.props.userId}`, this.state);
     }
     this.resetForm();
   }
