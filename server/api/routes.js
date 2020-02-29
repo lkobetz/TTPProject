@@ -6,9 +6,9 @@ const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
 // use secrets file for development and process.env vars for production
-const { tpApiToken, sessionSecret } = require("../../secrets");
-// const tpApiToken = process.env.pApiToken;
-// const sessionSecret = process.env.sessionSecret;
+// const { tpApiToken, sessionSecret } = require("../../secrets");
+const tpApiToken = process.env.pApiToken;
+const sessionSecret = process.env.sessionSecret;
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
