@@ -14,10 +14,13 @@ class UserPortfolio extends React.Component {
     this.addStock = this.addStock.bind(this);
   }
   async componentDidMount() {
-    const { data } = await axios.get(
-      `/api/${window.sessionStorage.getItem("userId")}`
-    );
-    this.setState({ user: data });
+    // if statement prevents displaying data of most recent user after they log out
+    if (window.sessionStorage.length) {
+      const { data } = await axios.get(
+        `/api/${window.sessionStorage.getItem("userId")}`
+      );
+      this.setState({ user: data });
+    }
   }
   getPriceOfAllStocks() {
     let totalsOfEach = [];
@@ -43,6 +46,7 @@ class UserPortfolio extends React.Component {
     });
   }
   render() {
+    console.log("sessionStorage:", window.sessionStorage);
     return (
       <div className="App">
         {this.state.user && (

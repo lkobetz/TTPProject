@@ -10,6 +10,7 @@ class Login extends React.Component {
       password: ""
     };
   }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)} method="POST">

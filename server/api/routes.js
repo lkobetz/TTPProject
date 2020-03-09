@@ -6,9 +6,9 @@ const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
 // use secrets file for development and process.env vars for production
-// const { tpApiToken, sessionSecret } = require("../../secrets");
-const tpApiToken = process.env.pApiToken;
-const sessionSecret = process.env.sessionSecret;
+const { tpApiToken, sessionSecret } = require("../../secrets");
+// const tpApiToken = process.env.pApiToken;
+// const sessionSecret = process.env.sessionSecret;
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -17,15 +17,10 @@ router.use(session({ secret: sessionSecret }));
 
 router.get("/", async (req, res, next) => {
   try {
-    res.send("this is the homepage. users can login or register");
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get("/register", async (req, res, next) => {
-  try {
-    res.send("registration page");
+    if (req.session.user.id > 0) {
+      await req.session.destroy();
+    }
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }
@@ -60,14 +55,6 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-router.get("/login", async (req, res, next) => {
-  try {
-    res.send("login page");
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.post("/login", async (req, res, next) => {
   try {
     if (!req.body.name || !req.body.password) {
@@ -87,14 +74,6 @@ router.post("/login", async (req, res, next) => {
         res.send("user not found");
       }
     }
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.post("/logout", async (req, res, next) => {
-  try {
-    session.destroy();
   } catch (err) {
     next(err);
   }

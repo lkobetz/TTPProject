@@ -20,7 +20,9 @@ class NavBar extends React.Component {
     );
     this.setState({ user: data });
   }
-  getUser;
+  async logout() {
+    await window.sessionStorage.removeItem("userId");
+  }
   render() {
     return (
       <div id={"navbar"}>
@@ -53,6 +55,17 @@ class NavBar extends React.Component {
               }}
             >
               <h5>Transactions</h5>
+            </Link>
+            <Link
+              onClick={this.logout}
+              className={"navbar_link"}
+              params={"logout"}
+              to={"/"}
+              style={{
+                textDecoration: "none"
+              }}
+            >
+              <h5>Logout</h5>
             </Link>
           </nav>
         )}
