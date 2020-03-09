@@ -102,8 +102,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.get("/:id/apicall", async (req, res, next) => {
-  console.log("req.body:", req.body);
-  const tickerSymbol = req.body.ticker;
+  const tickerSymbol = req.query.ticker;
   const url = `https://cloud.iexapis.com/stable/stock/${tickerSymbol}/quote/?token=${tpApiToken}&period=annual`;
   const stock = await apiHelper
     .make_API_call(url)
