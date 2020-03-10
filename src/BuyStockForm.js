@@ -65,7 +65,6 @@ class BuyStockForm extends React.Component {
   }
 
   async handleSubmit(event) {
-    // add an axios.put to handle the payment
     event.preventDefault();
     let contains = false;
     for (let i = 0; i < this.state.user.transactions.length; i++) {
@@ -73,6 +72,7 @@ class BuyStockForm extends React.Component {
         contains = true;
       }
     }
+    // handles the payment
     if (contains) {
       await axios.put(`/api/${this.props.userId}`, this.state);
     } else {

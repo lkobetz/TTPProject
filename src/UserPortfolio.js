@@ -46,7 +46,6 @@ class UserPortfolio extends React.Component {
     });
   }
   render() {
-    console.log("sessionStorage:", window.sessionStorage);
     return (
       <div className="App">
         {this.state.user && (
@@ -57,7 +56,7 @@ class UserPortfolio extends React.Component {
                 Total Value of My Stocks: ${this.getPriceOfAllStocks()}
               </h1>
               <div id={"portfolio_body"}>
-                <StockPortfolio />
+                <StockPortfolio user={this.state.user} />
                 <BuyStockForm
                   userId={this.state.user.id}
                   addStock={this.addStock}

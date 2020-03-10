@@ -11,19 +11,18 @@ class SingleStock extends React.Component {
     };
   }
   async componentDidMount() {
-    const { data } = await axios.get(`/api/${this.state.user.id}/apicall`, {
+    const { data } = await axios.get(`/api/${this.props.user.id}/apicall`, {
       params: {
         ticker: this.props.stock.name
       }
     });
     if (data.latestPrice) {
       this.setState({
-        latestPrice: data.latestPrice * this.props.stock.quantity
+        latestPrice: (data.latestPrice * this.props.stock.quantity).toFixed(2)
       });
     }
   }
   render() {
-    console.log(this.props.stock);
     return (
       <div id="stock_container">
         <div className={"stock"}>

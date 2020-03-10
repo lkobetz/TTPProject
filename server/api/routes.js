@@ -175,9 +175,6 @@ router.post("/:id", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   try {
-    // running this route gives the error: Uncaught (in promise) Error: Request failed with status code 400
-    console.log("made it to router.put");
-    // if the user already owns stock by this name, increment the quantity of the pre-existing stock
     const transaction = await Transaction.findOne({
       where: {
         userId: req.body.user.id,
@@ -213,7 +210,6 @@ router.put("/:id", async (req, res, next) => {
     const updatedUser = await user.update({
       cash: updatedCash
     });
-    console.log("updatedUser.cash:", updatedUser.cash);
     if (updatedUser.cash > 0) {
       res.sendStatus(200);
     } else {
