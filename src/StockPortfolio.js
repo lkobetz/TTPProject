@@ -6,8 +6,7 @@ class StockPortfolio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
-      stocksAdded: this.props.quantity
+      user: null
     };
   }
   async componentDidMount() {
@@ -16,11 +15,11 @@ class StockPortfolio extends React.Component {
     );
     this.setState({ user: data });
   }
+  // this 'listens' for the state change in UserPortfolio and rerenders this component if a new transaction has been made
   async componentDidUpdate(prevProps, prevState) {
     const { data } = await axios.get(
       `/api/${window.sessionStorage.getItem("userId")}`
     );
-
     const newTransaction = JSON.stringify(
       data.transactions[this.state.user.transactions.length - 1]
     );
@@ -28,11 +27,10 @@ class StockPortfolio extends React.Component {
       const lastTransaction = JSON.stringify(
         prevState.user.transactions[this.state.user.transactions.length - 1]
       );
-      console.log(lastTransaction, newTransaction);
       if (prevState.user && lastTransaction !== newTransaction) {
         this.setState({ user: data });
       } else {
-        console.log(false);
+        return false;
       }
     }
   }

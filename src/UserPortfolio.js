@@ -37,7 +37,7 @@ class UserPortfolio extends React.Component {
       return 0;
     }
   }
-  // this was supposed to trigger a component rerender by updating the state
+  // this triggers a component rerender by updating the state
   addStock() {
     let newStocks = this.state.stocksAdded;
     newStocks++;
@@ -53,10 +53,11 @@ class UserPortfolio extends React.Component {
             <NavBar />
             <div id={"portfolio_container"}>
               <h1 id={"portfolio_header"}>
-                Total Value of My Stocks: ${this.getPriceOfAllStocks()}
+                Total Value of {this.state.user.name}'s Stocks: $
+                {this.getPriceOfAllStocks()}
               </h1>
               <div id={"portfolio_body"}>
-                <StockPortfolio user={this.state.user} />
+                <StockPortfolio />
                 <BuyStockForm
                   userId={this.state.user.id}
                   addStock={this.addStock}
