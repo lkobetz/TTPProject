@@ -6,9 +6,9 @@ const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
 // use secrets file for development and process.env vars for production
-// const { tpApiToken, sessionSecret } = require("../../secrets");
-const tpApiToken = process.env.pApiToken;
-const sessionSecret = process.env.sessionSecret;
+const { tpApiToken, sessionSecret } = require("../../secrets");
+// const tpApiToken = process.env.pApiToken;
+// const sessionSecret = process.env.sessionSecret;
 
 // parses the req.body from the forms
 router.use(bodyParser.json());
@@ -22,7 +22,7 @@ router.get("/", async (req, res, next) => {
   try {
     // this is supposed to log the user out if they return to the login page (the logout button sends them here)
     // it doesn't seem to actually log the user out though until their id is removed from sessionStorage on the client side
-    if (req.session.user.id > 0) {
+    if (req.session.user && req.session) {
       await req.session.destroy();
     }
     res.sendStatus(200);
@@ -53,8 +53,9 @@ router.post("/register", async (req, res, next) => {
         });
         // should use cookies so user can stay logged in across tabs/windows
         req.session.user = newUser;
+        req.session.save();
         // redirects to a route that serves the logged in user's info (will be blank since they just registered)
-        res.redirect("/api/" + req.session.user.id);
+        res.redirect("/api/" + newUser.id);
       }
     }
   } catch (err) {
@@ -77,8 +78,9 @@ router.post("/login", async (req, res, next) => {
       if (foundUser) {
         // should use cookies so user can stay logged in across tabs/windows
         req.session.user = foundUser;
+        req.session.save();
         // redirect to route that serves user's info (previous transactions)
-        res.redirect("/api/" + req.session.user.id);
+        res.redirect("/api/" + foundUser.id);
       } else {
         res.send("user not found");
       }

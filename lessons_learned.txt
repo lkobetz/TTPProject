@@ -1,0 +1,5 @@
+-can store logged in user in express sessions on the backend and sessionStore on the client side (but causes memory leak in production, see issues)
+-can use a proxy (development mode) to add another server along with 'concurrently' and 'npm-run-all' to run both at once
+-req.query is for get requests, req.body is for posts and puts
+-npm run build is the create-react-app command that bundles react for production (change 'public' to 'build' in express static middleware)
+-sequelize associations must be imported into the seed file to allow eager loading of associated data
