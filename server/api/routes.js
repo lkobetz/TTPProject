@@ -55,7 +55,9 @@ router.post("/register", async (req, res, next) => {
         req.session.user = newUser;
         req.session.save();
         // redirects to a route that serves the logged in user's info (will be blank since they just registered)
-        res.redirect("/api/" + newUser.id);
+        if (newUser.id !== "undefined") {
+          res.redirect("/api/" + newUser.id);
+        }
       }
     }
   } catch (err) {
@@ -75,14 +77,16 @@ router.post("/login", async (req, res, next) => {
           email: req.body.email
         }
       });
-      if (foundUser) {
+      if (foundUser.id) {
         // should use cookies so user can stay logged in across tabs/windows
         req.session.user = foundUser;
         req.session.save();
         // redirect to route that serves user's info (previous transactions)
-        res.redirect("/api/" + foundUser.id);
+        if (foundUser.id !== "undefined") {
+          res.redirect("/api/" + foundUser.id);
+        }
       } else {
-        res.send("user not found");
+        res.status(404).send("user not found");
       }
     }
   } catch (err) {

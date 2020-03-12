@@ -1,3 +1,4 @@
--memory leak in production mode due to express sessions - sometimes when a user logs in, the previously logged in user's info is displayed. Solve by either saving session info in the database (not simply in memory)? Or research for further solutions. (Cookies?)
+-memory leak in production mode due to express sessions - sometimes when a user logs in, the previously logged in user's info is displayed. Solve by either saving session info in the database (not simply in memory)? Or research for further solutions. (Cookies?) -- seem to have solved this by redirecting to the user's id from the database, not sessions. not 100% sure though
+- this is still a problem if you try to register with an existing user's info (Why?)
 -after user makes a purchase, page needs to be refreshed to view most recent data. Can NOT solve this by calling API in componentDidUpdate because it create an infinite(?) loop of API calls
 -routes can be made more modular using MVC (model view controller) design pattern
