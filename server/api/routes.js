@@ -6,9 +6,9 @@ const { Transaction } = require("../db/associations");
 const { User } = require("../db/associations");
 const apiHelper = require("./apiHelper");
 // use secrets file for development and process.env vars for production
-// const { tpApiToken, sessionSecret } = require("../../secrets");
-const tpApiToken = process.env.pApiToken;
-const sessionSecret = process.env.sessionSecret;
+const { tpApiToken, sessionSecret } = require("../../secrets");
+// const tpApiToken = process.env.pApiToken;
+// const sessionSecret = process.env.sessionSecret;
 
 // parses the req.body from the forms
 router.use(bodyParser.json());
@@ -44,7 +44,7 @@ router.post("/register", async (req, res, next) => {
         }
       });
       if (foundUser) {
-        res.send("user already exists");
+        res.status(401).send("user already exists");
       } else {
         const newUser = await User.create({
           name: req.body.name,
@@ -55,7 +55,7 @@ router.post("/register", async (req, res, next) => {
         req.session.user = newUser;
         req.session.save();
         // redirects to a route that serves the logged in user's info (will be blank since they just registered)
-        if (newUser.id !== "undefined") {
+        if (newUser.id) {
           res.redirect("/api/" + newUser.id);
         }
       }
@@ -77,12 +77,12 @@ router.post("/login", async (req, res, next) => {
           email: req.body.email
         }
       });
-      if (foundUser.id) {
+      if (foundUser) {
         // should use cookies so user can stay logged in across tabs/windows
         req.session.user = foundUser;
         req.session.save();
         // redirect to route that serves user's info (previous transactions)
-        if (foundUser.id !== "undefined") {
+        if (foundUser.id) {
           res.redirect("/api/" + foundUser.id);
         }
       } else {
