@@ -21,7 +21,6 @@ class SingleStock extends React.Component {
   async componentDidMount() {
     const newPrice = await this.callApi();
     if (newPrice) {
-      console.log("new price from componentDidMount:", newPrice);
       this.setState({
         latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
       });
