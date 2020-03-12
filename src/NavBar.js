@@ -36,8 +36,8 @@ class NavBar extends React.Component {
                 textDecoration: "none",
                 color:
                   this.state.url === `${this.state.user.id}`
-                    ? "#6600ff"
-                    : "black"
+                    ? "aquamarine"
+                    : "#6600ff"
               }}
             >
               <h5>Portfolio</h5>
@@ -50,8 +50,8 @@ class NavBar extends React.Component {
                 textDecoration: "none",
                 color:
                   this.state.url === `${this.state.user.id}/transactions`
-                    ? "#6600ff"
-                    : "black"
+                    ? "aquamarine"
+                    : "#6600ff"
               }}
             >
               <h5>Transactions</h5>
@@ -62,7 +62,8 @@ class NavBar extends React.Component {
               params={"logout"}
               to={"/"}
               style={{
-                textDecoration: "none"
+                textDecoration: "none",
+                color: "#6600ff"
               }}
             >
               <h5>Logout</h5>

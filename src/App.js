@@ -23,8 +23,16 @@ class App extends React.Component {
   render() {
     return (
       <div id="login">
-        <button onClick={() => this.toggleFunc("new")}>Register</button>
-        <button onClick={() => this.toggleFunc("existing")}>Login</button>
+        <h4>Login or Register to View Your Stock Portfolio</h4>
+        <button className={"button"} onClick={() => this.toggleFunc("new")}>
+          Register
+        </button>
+        <button
+          className={"button"}
+          onClick={() => this.toggleFunc("existing")}
+        >
+          Login
+        </button>
         {this.state.toggle && (
           <Login userType={this.state.userType} changeUser={this.changeUser} />
         )}

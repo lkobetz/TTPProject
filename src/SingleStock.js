@@ -10,18 +10,45 @@ class SingleStock extends React.Component {
       latestPrice: this.props.stock.latestPrice
     };
   }
-  async componentDidMount() {
+  async callApi() {
     const { data } = await axios.get(`/api/${this.props.user.id}/apicall`, {
       params: {
         ticker: this.props.stock.name
       }
     });
-    if (data.latestPrice) {
+    return data.latestPrice;
+  }
+  async componentDidMount() {
+    const newPrice = await this.callApi();
+    if (newPrice) {
+      console.log("new price from componentDidMount:", newPrice);
       this.setState({
-        latestPrice: (data.latestPrice * this.props.stock.quantity).toFixed(2)
+        latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
       });
     }
   }
+  // making API calls in componentDidUpdate results in a billion api calls
+  // try making request to user's data instead?
+  // async componentDidUpdate(prevProps, prevState) {
+  //   console.log(this.state.latestPrice);
+  //   const newTransaction = JSON.stringify(
+  //     this.state.user.transactions[this.state.user.transactions.length - 1]
+  //   );
+  //   if (prevProps.user) {
+  //     const lastTransaction = JSON.stringify(
+  //       prevProps.user.transactions[this.state.user.transactions.length - 1]
+  //     );
+  //     const newPrice = await this.callApi();
+  //     console.log("newPrice from componentDidUpdate:", newPrice);
+  //     if (prevProps.user && lastTransaction !== newTransaction && newPrice) {
+  //       this.setState({
+  //         latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
+  //       });
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  // }
   render() {
     return (
       <div id="stock_container">

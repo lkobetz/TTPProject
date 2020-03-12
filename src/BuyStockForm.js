@@ -19,10 +19,10 @@ class BuyStockForm extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className={"portfolio_item"}>
         {this.state.user && (
           <form
-            className={"portfolio_item"}
+            className={"form_item"}
             onSubmit={this.handleSubmit.bind(this)}
             method="POST"
           >
