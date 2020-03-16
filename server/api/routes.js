@@ -14,35 +14,7 @@ router.get("/", controller.main.home);
 
 router.post("/register", controller.main.register);
 
-// router.post('/login', controller.main.login)
-router.post("/login", async (req, res, next) => {
-  try {
-    if (!req.body.name || !req.body.password || !req.body.email) {
-      res.status("400").send("Invalid details!");
-    } else {
-      const foundUser = await User.findOne({
-        where: {
-          name: req.body.name,
-          password: req.body.password,
-          email: req.body.email
-        }
-      });
-      if (foundUser) {
-        // should use cookies so user can stay logged in across tabs/windows
-        req.session.user = foundUser;
-        req.session.save();
-        // redirect to route that serves user's info (previous transactions)
-        if (foundUser.id) {
-          res.redirect("/api/" + foundUser.id);
-        }
-      } else {
-        res.status(404).send("user not found");
-      }
-    }
-  } catch (err) {
-    next(err);
-  }
-});
+router.post("/login", controller.main.login);
 
 // router.get('/:id', controller.user.showPortfolio)
 router.get("/:id", async (req, res, next) => {

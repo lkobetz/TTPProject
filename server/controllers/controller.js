@@ -22,13 +22,13 @@ module.exports = {
         if (!input) {
           res.status(400).send("Invalid Details");
         } else {
-          findUser(req.body.email).then(result => {
+          findUser(req.body).then(result => {
             if (result) {
               res.status(409).send("User already exists");
             } else {
               registerUser(req.body).then(result => {
-                console.log("registered user:", result);
                 // should use cookies so user can stay logged in across tabs/windows
+                // should save the session in the database so we can make a single loginUser function for both register and login routes
                 req.session.user = result;
                 req.session.save();
                 // redirects to a route that serves the logged in user's info (will be blank since they just registered)
@@ -36,6 +36,31 @@ module.exports = {
                   res.redirect("/api/" + result.id);
                 }
               });
+            }
+          });
+        }
+      } catch (err) {
+        next(err);
+      }
+    },
+    login: (req, res) => {
+      try {
+        // sufficientInput will return the req.body if it's sufficient
+        const input = sufficientInput(req.body);
+        if (!input) {
+          res.status("400").send("Invalid details!");
+        } else {
+          findUser(req.body).then(result => {
+            if (result) {
+              // should use cookies so user can stay logged in across tabs/windows
+              req.session.user = result;
+              req.session.save();
+              // redirect to route that serves user's info (previous transactions)
+              if (result.id) {
+                res.redirect("/api/" + result.id);
+              }
+            } else {
+              res.status(404).send("user not found");
             }
           });
         }

@@ -8,10 +8,11 @@ module.exports = {
       return true;
     }
   },
-  findUser: async email => {
+  findUser: async input => {
     const foundUser = await User.findOne({
       where: {
-        email: email
+        email: input.email,
+        password: input.password
       }
     });
     return foundUser;
