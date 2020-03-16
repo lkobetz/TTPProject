@@ -35,5 +35,30 @@ module.exports = {
       password: input.password
     });
     return newUser;
+  },
+  getUsersTransactions: async sessionId => {
+    const userTransactions = await Transaction.findAll({
+      where: {
+        userId: sessionId
+      }
+    });
+    return userTransactions;
+  },
+  addTransaction: async (userId, stock, quantity) => {
+    const newTransaction = await Transaction.create({
+      name: stock.symbol,
+      price: stock.latestPrice,
+      quantity: quantity,
+      userId: userId
+    });
+    return newTransaction;
+  },
+  updateUserCash: async (cash, cost) => {
+    // subtract the current price of the stock * desired quantity from the user's cash
+    const updatedCash = cash - cost;
+    const updatedUser = await user.update({
+      cash: updatedCash
+    });
+    return updatedUser;
   }
 };
