@@ -3,3 +3,4 @@
 -req.query is for get requests, req.body is for posts and puts
 -npm run build is the create-react-app command that bundles react for production (change 'public' to 'build' in express static middleware)
 -sequelize associations must be imported into the seed file to allow eager loading of associated data
+-to seed (or re-seed) heroku database, run 'heroku run bash --app larissa-ttp-project' in bash, then 'npm run seed'

@@ -3,8 +3,20 @@
 const express = require("express");
 const path = require("path");
 const volleyball = require("volleyball");
+var bodyParser = require("body-parser");
+var session = require("express-session");
+var cookieParser = require("cookie-parser");
+const { sessionSecret } = require("../secrets");
 
 const app = express();
+
+// parses the req.body from the forms
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// haven't actually set up cookies yet
+app.use(cookieParser());
+// logged-in user is stored on the session
+app.use(session({ secret: sessionSecret }));
 
 // logging middleware
 app.use(volleyball);

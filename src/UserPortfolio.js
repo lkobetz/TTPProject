@@ -16,6 +16,7 @@ class UserPortfolio extends React.Component {
   async componentDidMount() {
     // if statement prevents displaying data of most recent user after they log out
     if (window.sessionStorage.length) {
+      // get the user from sessionStorage so it only displays data of logged in user
       const { data } = await axios.get(
         `/api/${window.sessionStorage.getItem("userId")}`
       );
