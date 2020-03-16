@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const controller = require("../controllers/controller");
+const mainController = require("../controllers/main");
+const userController = require("../controllers/user");
 
 // these are only here temporarily before I finish moving everything to the controller
 const { Transaction, User } = require("../db/associations");
@@ -10,34 +11,13 @@ const { tpApiToken } = require("../../secrets");
 // const tpApiToken = process.env.pApiToken;
 // const sessionSecret = process.env.sessionSecret;
 
-router.get("/", controller.main.home);
+router.get("/", mainController.home);
 
-router.post("/register", controller.main.register);
+router.post("/register", mainController.register);
 
-router.post("/login", controller.main.login);
+router.post("/login", mainController.login);
 
-// router.get('/:id', controller.user.showPortfolio)
-router.get("/:id", async (req, res, next) => {
-  try {
-    // find the user that's currently on the session and serve up their info, eager load associated transactions
-    const user = await User.findOne({
-      where: {
-        id: req.session.user.id
-      },
-      include: {
-        model: Transaction
-      }
-    });
-    // if this user isn't on the session, access is denied. Effectively, whichever user id you try to go to, you will only be served the info of the user on the session (this way the user can't spy on anyone!)
-    if (!user) {
-      req.status(401).send("access denied");
-    } else {
-      res.status(200).send(user);
-    }
-  } catch (err) {
-    next(err);
-  }
-});
+router.get("/:id", userController.showPortfolio);
 
 // router.get('/:id/apicall', controller.user.getLatestPriceOfStock)
 router.get("/:id/apicall", async (req, res, next) => {
