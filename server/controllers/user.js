@@ -2,7 +2,9 @@ const {
   findUserBySession,
   getUsersTransactions,
   addTransaction,
-  updateUserCash
+  updateUserCash,
+  getTransactionByUserId,
+  updateTransactionQuantity
 } = require("../models/models");
 const apiHelper = require("./apiHelper");
 
@@ -62,7 +64,7 @@ module.exports = {
         parseInt(stock.latestPrice) * parseInt(req.body.quantity);
       // if they have enough money, update their cash
       if (user.cash >= totalCost) {
-        updateUserCash(user.cash, totalCost);
+        updateUserCash(user.id, user.cash, totalCost);
         // then, add the new stock instance to the Transaction table:
         const newTransaction = addTransaction(
           req.session.user.id,
@@ -76,6 +78,42 @@ module.exports = {
       } else {
         // if the user doesn't have enough money, send an error message
         res.status(400).send("not enough cash!");
+      }
+    } catch (err) {
+      next(err);
+    }
+  },
+  updateStockQuantity: async (req, res, next) => {
+    try {
+      // this route handles updating quantity of a stock that's already associated with the user
+      // first, find get the user on the session
+      const user = await findUserBySession(req.session.user.id);
+      // next, get the latest price of the stock they want to increase
+      const { latestPrice } = await apiHelper.make_API_call(req.body.ticker);
+      if (!latestPrice) {
+        res
+          .status(500)
+          .send("unable to retrieve stock information at this time");
+      } else {
+        const totalCost = parseInt(latestPrice) * parseInt(req.body.quantity);
+        // if they have enough money, update their cash
+        if (user.cash >= totalCost) {
+          updateUserCash(user.id, user.cash, totalCost).then(() => {
+            // find the transaction with this ticker associated with this user...
+            getTransactionByUserId(user.id, req.body.ticker).then(
+              transaction => {
+                // ...and add the new quantity of this stock
+                const newQuantity =
+                  parseInt(transaction.quantity) + parseInt(req.body.quantity);
+                updateTransactionQuantity(user.id, newQuantity).then(() => {
+                  res.sendStatus(200);
+                });
+              }
+            );
+          });
+        } else {
+          res.status(400).send("not enough cash!");
+        }
       }
     } catch (err) {
       next(err);

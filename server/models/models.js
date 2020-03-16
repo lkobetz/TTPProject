@@ -53,12 +53,37 @@ module.exports = {
     });
     return newTransaction;
   },
-  updateUserCash: async (cash, cost) => {
+  updateUserCash: async (userId, cash, cost) => {
+    const user = await User.findOne({
+      where: {
+        id: userId
+      }
+    });
     // subtract the current price of the stock * desired quantity from the user's cash
     const updatedCash = cash - cost;
     const updatedUser = await user.update({
       cash: updatedCash
     });
     return updatedUser;
+  },
+  getTransactionByUserId: async (userId, ticker) => {
+    const transaction = await Transaction.findOne({
+      where: {
+        userId: userId,
+        name: ticker
+      }
+    });
+    return transaction;
+  },
+  updateTransactionQuantity: async (userId, newQuantity) => {
+    const transaction = await Transaction.findOne({
+      where: {
+        userId: userId
+      }
+    });
+    await transaction.update({
+      quantity: newQuantity
+    });
+    return;
   }
 };
