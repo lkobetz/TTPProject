@@ -7,7 +7,8 @@ class SingleStock extends React.Component {
     this.state = {
       user: this.props.user,
       ticker: this.props.stock.name,
-      latestPrice: this.props.stock.latestPrice
+      latestPrice: this.props.stock.latestPrice,
+      color: ""
     };
   }
   async callApi() {
@@ -24,6 +25,13 @@ class SingleStock extends React.Component {
       this.setState({
         latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
       });
+      if (newPrice < this.props.stock.price) {
+        this.setState({ color: "#ff0066" });
+      } else if (newPrice > this.props.stock.price) {
+        this.setState({ color: "#00ff00" });
+      } else {
+        this.setState({ color: "lightgray" });
+      }
     }
   }
   // making API calls in componentDidUpdate results in a billion api calls
@@ -52,10 +60,42 @@ class SingleStock extends React.Component {
     return (
       <div id="stock_container">
         <div className={"stock"}>
-          <h3 className={"stock_item"}>{this.props.stock.name}</h3>
-          <h3 className={"stock_item"}>{this.props.stock.quantity} Shares</h3>
-          <h3 className={"stock_item"}>=</h3>
-          <h3 className={"stock_item"}>${this.state.latestPrice}</h3>
+          <h3
+            className={"stock_item"}
+            style={{
+              textDecoration: "none",
+              color: this.state.color
+            }}
+          >
+            {this.props.stock.name}
+          </h3>
+          <h3
+            className={"stock_item"}
+            style={{
+              textDecoration: "none",
+              color: this.state.color
+            }}
+          >
+            {this.props.stock.quantity} Shares
+          </h3>
+          <h3
+            className={"stock_item"}
+            style={{
+              textDecoration: "none",
+              color: this.state.color
+            }}
+          >
+            =
+          </h3>
+          <h3
+            className={"stock_item"}
+            style={{
+              textDecoration: "none",
+              color: this.state.color
+            }}
+          >
+            ${this.state.latestPrice}
+          </h3>
         </div>
       </div>
     );

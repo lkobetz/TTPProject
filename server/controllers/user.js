@@ -6,6 +6,7 @@ const {
   getTransactionByUserId,
   updateTransactionQuantity
 } = require("../models/models");
+
 const apiHelper = require("./apiHelper");
 
 module.exports = {
@@ -86,7 +87,7 @@ module.exports = {
   updateStockQuantity: async (req, res, next) => {
     try {
       // this route handles updating quantity of a stock that's already associated with the user
-      // first, find get the user on the session
+      // first, find the user on the session
       const user = await findUserBySession(req.session.user.id);
       // next, get the latest price of the stock they want to increase
       const { latestPrice } = await apiHelper.make_API_call(req.body.ticker);
@@ -95,8 +96,9 @@ module.exports = {
           .status(500)
           .send("unable to retrieve stock information at this time");
       } else {
+        // multiply the cost of the stock by the desired quantity
         const totalCost = parseInt(latestPrice) * parseInt(req.body.quantity);
-        // if they have enough money, update their cash
+        // if they can afford this quantity of stock at its current price, update their cash
         if (user.cash >= totalCost) {
           updateUserCash(user.id, user.cash, totalCost).then(() => {
             // find the transaction with this ticker associated with this user...
