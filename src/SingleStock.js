@@ -6,7 +6,7 @@ class SingleStock extends React.Component {
     super(props);
     this.state = {
       user: this.props.user,
-      ticker: this.props.stock.name,
+      stock: this.props.stock,
       latestPrice: this.props.stock.latestPrice,
       color: ""
     };
@@ -25,9 +25,9 @@ class SingleStock extends React.Component {
       this.setState({
         latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
       });
-      if (newPrice < this.props.stock.price) {
+      if (newPrice < this.state.stock.price) {
         this.setState({ color: "#ff0066" });
-      } else if (newPrice > this.props.stock.price) {
+      } else if (newPrice > this.state.stock.price) {
         this.setState({ color: "#00ff00" });
       } else {
         this.setState({ color: "lightgray" });
@@ -67,7 +67,7 @@ class SingleStock extends React.Component {
               color: this.state.color
             }}
           >
-            {this.props.stock.name}
+            {this.state.stock.name}
           </h3>
           <h3
             className={"stock_item"}
@@ -76,7 +76,7 @@ class SingleStock extends React.Component {
               color: this.state.color
             }}
           >
-            {this.props.stock.quantity} Shares
+            {this.state.stock.quantity} Shares
           </h3>
           <h3
             className={"stock_item"}
