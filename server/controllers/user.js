@@ -107,7 +107,11 @@ module.exports = {
                 // ...and add the new quantity of this stock
                 const newQuantity =
                   parseInt(transaction.quantity) + parseInt(req.body.quantity);
-                updateTransactionQuantity(user.id, newQuantity).then(() => {
+                updateTransactionQuantity(
+                  user.id,
+                  req.body.ticker,
+                  newQuantity
+                ).then(() => {
                   res.sendStatus(200);
                 });
               }

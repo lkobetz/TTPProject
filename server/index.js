@@ -7,9 +7,9 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
 // development:
-// const { sessionSecret } = require("../secrets");
+const { sessionSecret } = require("../secrets");
 // production:
-const sessionSecret = process.env.sessionSecret;
+// const sessionSecret = process.env.sessionSecret;
 
 const app = express();
 

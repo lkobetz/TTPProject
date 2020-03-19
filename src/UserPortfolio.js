@@ -58,7 +58,7 @@ class UserPortfolio extends React.Component {
                 {this.getPriceOfAllStocks()}
               </h1>
               <div id={"portfolio_body"}>
-                <StockPortfolio />
+                <StockPortfolio user={this.state.user} />
                 <BuyStockForm
                   userId={this.state.user.id}
                   addStock={this.addStock}

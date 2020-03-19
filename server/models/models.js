@@ -75,15 +75,16 @@ module.exports = {
     });
     return transaction;
   },
-  updateTransactionQuantity: async (userId, newQuantity) => {
-    const transaction = await Transaction.findOne({
+  updateTransactionQuantity: async (userId, ticker, newQuantity) => {
+    let transaction = await Transaction.findOne({
       where: {
-        userId: userId
+        userId: userId,
+        name: ticker
       }
     });
-    await transaction.update({
+    transaction = await transaction.update({
       quantity: newQuantity
     });
-    return;
+    return transaction;
   }
 };
