@@ -7,48 +7,65 @@ class Login extends React.Component {
     this.state = {
       name: "",
       email: "",
-      password: ""
+      password: "",
+      alert: 0
     };
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)} method="POST">
-        <div>
-          <input
-            className={"form_item"}
-            type="text"
-            value={this.state.name}
-            placeholder={"Name"}
-            onChange={this.onNameChange.bind(this)}
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            className={"form_item"}
-            type="email"
-            aria-describedby="emailHelp"
-            value={this.state.email}
-            placeholder={"Email"}
-            onChange={this.onEmailChange.bind(this)}
-          />
-        </div>{" "}
-        <br />
-        <div>
-          <input
-            className={"form_item"}
-            type="password"
-            value={this.state.password}
-            placeholder={"Password"}
-            onChange={this.onPasswordChange.bind(this)}
-          />
-        </div>
-        <br />
-        <button type="submit" className="submit_button">
-          Submit
-        </button>
-      </form>
+      <div>
+        {this.state.alert === 400 && (
+          <h5 className={"form_item"}>
+            Please enter a name, username, and password.
+          </h5>
+        )}
+        {this.state.alert === 409 && (
+          <h5 className={"form_item"}>
+            That email address has already been registered.
+            <br /> Please choose another email address.
+          </h5>
+        )}
+        {this.state.alert === 404 && (
+          <h5 className={"form_item"}>Incorrect email and / or password.</h5>
+        )}
+        <form onSubmit={this.handleSubmit.bind(this)} method="POST">
+          <div>
+            <input
+              className={"form_item"}
+              type="text"
+              value={this.state.name}
+              placeholder={"Name"}
+              onChange={this.onNameChange.bind(this)}
+            />
+          </div>
+          <br />
+          <div>
+            <input
+              className={"form_item"}
+              type="email"
+              aria-describedby="emailHelp"
+              value={this.state.email}
+              placeholder={"Email"}
+              onChange={this.onEmailChange.bind(this)}
+            />
+          </div>{" "}
+          <br />
+          <div>
+            <input
+              className={"form_item"}
+              type="password"
+              value={this.state.password}
+              placeholder={"Password"}
+              onChange={this.onPasswordChange.bind(this)}
+            />
+          </div>
+          <br />
+          <button type="submit" className="submit_button">
+            Submit
+          </button>
+        </form>
+      </div>
     );
   }
   onNameChange(event) {
@@ -77,10 +94,10 @@ class Login extends React.Component {
       } catch (error) {
         if (error.response) {
           if (error.response.status === 400) {
-            alert("Please enter a name, username, and password.");
+            this.setState({ alert: 400 });
           }
           if (error.response.status === 409) {
-            alert("That email address has already been registered.");
+            this.setState({ alert: 409 });
           }
         }
       }
@@ -96,10 +113,10 @@ class Login extends React.Component {
       } catch (error) {
         if (error.response) {
           if (error.response.status === 400) {
-            alert("Please enter a name, username, and password.");
+            this.setState({ alert: 400 });
           }
           if (error.response.status === 404) {
-            alert("Incorrect email and/or password");
+            this.setState({ alert: 404 });
           }
         }
       }
