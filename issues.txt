@@ -1,4 +1,5 @@
 -memory leak in production mode due to express sessions - sometimes when a pre-existing user tries to register again, the previously logged in user's info is displayed. Solved by redirecting the login route to the user's page from the database, not from the session.
-- this is still a problem if you try to register with an existing user's info (Why?)
+-only one user per device can log in at once
 -after user makes a purchase, page needs to be refreshed to view most recent data. Can NOT solve this by calling API in componentDidUpdate because it create an infinite(?) loop of API calls
--routes can be made more modular using MVC (model view controller) design pattern
+-routes can be made more modular using MVC (model view controller) design pattern - finished
+-user should receive messages if login fails

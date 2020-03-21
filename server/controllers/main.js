@@ -51,7 +51,7 @@ module.exports = {
       // sufficientInput will return the req.body if it's sufficient
       const input = sufficientInput(req.body);
       if (!input) {
-        res.status("400").send("Invalid details!");
+        res.status(400).send("Insufficient Information");
       } else {
         findUserByEmailAndPass(req.body).then(result => {
           if (result) {

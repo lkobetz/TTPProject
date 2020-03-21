@@ -66,20 +66,42 @@ class Login extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     if (this.props.userType === "new") {
-      const response = await axios.post("/api/register", this.state);
-      this.resetForm();
-      if (response.status === 200) {
-        const id = response.data.id;
-        await window.sessionStorage.setItem("userId", id);
-        this.props.changeUser(response.data);
+      try {
+        const response = await axios.post("/api/register", this.state);
+        this.resetForm();
+        if (response.status === 200) {
+          const id = response.data.id;
+          await window.sessionStorage.setItem("userId", id);
+          this.props.changeUser(response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 400) {
+            alert("Please enter a name, username, and password.");
+          }
+          if (error.response.status === 409) {
+            alert("That email address has already been registered.");
+          }
+        }
       }
     } else if (this.props.userType === "existing") {
-      const response = await axios.post("/api/login", this.state);
-      this.resetForm();
-      if (response.status === 200) {
-        const id = response.data.id;
-        await window.sessionStorage.setItem("userId", id);
-        this.props.changeUser(response.data);
+      try {
+        const response = await axios.post("/api/login", this.state);
+        this.resetForm();
+        if (response.status === 200) {
+          const id = response.data.id;
+          await window.sessionStorage.setItem("userId", id);
+          this.props.changeUser(response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 400) {
+            alert("Please enter a name, username, and password.");
+          }
+          if (error.response.status === 404) {
+            alert("Incorrect email and/or password");
+          }
+        }
       }
     }
   }

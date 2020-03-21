@@ -2,7 +2,7 @@ const { Transaction, User } = require("../db/associations");
 
 module.exports = {
   sufficientInput: input => {
-    if (!input.name && input.email && input.password) {
+    if (!input.name || !input.email || !input.password) {
       return false;
     } else {
       return true;

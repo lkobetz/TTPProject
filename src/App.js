@@ -29,7 +29,6 @@ class App extends React.Component {
     this.setState({ user: loggedInUser });
   }
   render() {
-    console.log(this.state.userType);
     const loginColor = this.state.userType === "existing" ? "#6600ff" : "black";
     const registerColor = this.state.userType === "new" ? "#6600ff" : "black";
     return (
