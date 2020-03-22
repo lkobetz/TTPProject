@@ -34,28 +34,6 @@ class SingleStock extends React.Component {
       }
     }
   }
-  // making API calls in componentDidUpdate results in a billion api calls
-  // try making request to user's data instead?
-  // async componentDidUpdate(prevProps, prevState) {
-  //   console.log(this.state.latestPrice);
-  //   const newTransaction = JSON.stringify(
-  //     this.state.user.transactions[this.state.user.transactions.length - 1]
-  //   );
-  //   if (prevProps.user) {
-  //     const lastTransaction = JSON.stringify(
-  //       prevProps.user.transactions[this.state.user.transactions.length - 1]
-  //     );
-  //     const newPrice = await this.callApi();
-  //     console.log("newPrice from componentDidUpdate:", newPrice);
-  //     if (prevProps.user && lastTransaction !== newTransaction && newPrice) {
-  //       this.setState({
-  //         latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
-  //       });
-  //     } else {
-  //       return false;
-  //     }
-  //   }
-  // }
   render() {
     return (
       <div id="stock_container">

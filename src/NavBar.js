@@ -13,7 +13,7 @@ class NavBar extends React.Component {
   }
   async componentDidMount() {
     let page = window.location.href.toString();
-    page = page.slice(page.indexOf("#") + 2);
+    page = parseInt(page.slice(page.indexOf("#") + 2));
     this.setState({ url: page });
     const { data } = await axios.get(
       `/api/${window.sessionStorage.getItem("userId")}`
