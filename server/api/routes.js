@@ -8,6 +8,8 @@ router.post("/register", mainController.register);
 
 router.post("/login", mainController.login);
 
+router.post("/logout", mainController.logout);
+
 router.get("/:id", userController.showPortfolio);
 
 router.get("/:id/apicall", userController.getLatestPriceOfStock);

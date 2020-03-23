@@ -11,7 +11,7 @@ class UserTransactions extends React.Component {
   }
   async componentDidMount() {
     const { data } = await axios.get(
-      `/api/${window.sessionStorage.getItem("userId")}`
+      `/api/${window.localStorage.getItem("userId")}`
     );
     this.setState({ user: data });
   }

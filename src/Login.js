@@ -12,6 +12,64 @@ class Login extends React.Component {
     };
   }
 
+  onNameChange(event) {
+    this.setState({ name: event.target.value });
+  }
+
+  onEmailChange(event) {
+    this.setState({ email: event.target.value });
+  }
+
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    if (this.props.userType === "new") {
+      try {
+        const response = await axios.post("/api/register", this.state);
+        this.resetForm();
+        if (response.status === 200) {
+          const id = response.data.id;
+          await window.localStorage.setItem("userId", id);
+          this.props.changeUser(response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 400) {
+            this.setState({ alert: 400 });
+          }
+          if (error.response.status === 409) {
+            this.setState({ alert: 409 });
+          }
+        }
+      }
+    } else if (this.props.userType === "existing") {
+      try {
+        const response = await axios.post("/api/login", this.state);
+        this.resetForm();
+        if (response.status === 200) {
+          const id = response.data.id;
+          await window.localStorage.setItem("userId", id);
+          this.props.changeUser(response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 400) {
+            this.setState({ alert: 400 });
+          }
+          if (error.response.status === 404) {
+            this.setState({ alert: 404 });
+          }
+        }
+      }
+    }
+  }
+  resetForm() {
+    this.setState({ name: "", email: "", message: "" });
+  }
+
   render() {
     return (
       <div>
@@ -67,63 +125,6 @@ class Login extends React.Component {
         </form>
       </div>
     );
-  }
-  onNameChange(event) {
-    this.setState({ name: event.target.value });
-  }
-
-  onEmailChange(event) {
-    this.setState({ email: event.target.value });
-  }
-
-  onPasswordChange(event) {
-    this.setState({ password: event.target.value });
-  }
-
-  async handleSubmit(event) {
-    event.preventDefault();
-    if (this.props.userType === "new") {
-      try {
-        const response = await axios.post("/api/register", this.state);
-        this.resetForm();
-        if (response.status === 200) {
-          const id = response.data.id;
-          await window.sessionStorage.setItem("userId", id);
-          this.props.changeUser(response.data);
-        }
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 400) {
-            this.setState({ alert: 400 });
-          }
-          if (error.response.status === 409) {
-            this.setState({ alert: 409 });
-          }
-        }
-      }
-    } else if (this.props.userType === "existing") {
-      try {
-        const response = await axios.post("/api/login", this.state);
-        this.resetForm();
-        if (response.status === 200) {
-          const id = response.data.id;
-          await window.sessionStorage.setItem("userId", id);
-          this.props.changeUser(response.data);
-        }
-      } catch (error) {
-        if (error.response) {
-          if (error.response.status === 400) {
-            this.setState({ alert: 400 });
-          }
-          if (error.response.status === 404) {
-            this.setState({ alert: 404 });
-          }
-        }
-      }
-    }
-  }
-  resetForm() {
-    this.setState({ name: "", email: "", message: "" });
   }
 }
 

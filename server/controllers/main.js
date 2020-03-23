@@ -5,14 +5,8 @@ const {
 } = require("../models/models");
 
 module.exports = {
-  home: async (req, res, next) => {
+  home: (req, res, next) => {
     try {
-      // this is supposed to log the user out if they return to the login page (the logout button sends them here)
-      // it doesn't seem to actually log the user out though until their id is removed from sessionStorage on the client side
-      // need to eventually store the session in the database
-      if (req.session.user && req.session) {
-        await req.session.destroy();
-      }
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -36,7 +30,7 @@ module.exports = {
               req.session.save();
               // redirects to a route that serves the logged in user's info (will be blank since they just registered)
               if (result.id) {
-                res.redirect("/api/" + result.id);
+                res.send(result);
               }
             });
           }
@@ -58,15 +52,28 @@ module.exports = {
             // should use cookies so user can stay logged in across tabs/windows
             req.session.user = result;
             req.session.save();
+            console.log("req.session after login:", req.session);
             // redirect to route that serves user's info (previous transactions)
             if (result.id) {
-              res.redirect("/api/" + result.id);
+              res.send(result);
             }
           } else {
             res.status(404).send("user not found");
           }
         });
       }
+    } catch (err) {
+      next(err);
+    }
+  },
+  logout: async (req, res, next) => {
+    try {
+      // this is supposed to log the user out if they return to the login page (the logout button sends them here)
+      // it doesn't seem to actually log the user out though until their id is removed from localStorage on the client side
+      if (req.session) {
+        await req.session.destroy();
+      }
+      res.redirect("/");
     } catch (err) {
       next(err);
     }

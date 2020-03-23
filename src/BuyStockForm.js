@@ -13,7 +13,7 @@ class BuyStockForm extends React.Component {
   }
   async componentDidMount() {
     const { data } = await axios.get(
-      `/api/${window.sessionStorage.getItem("userId")}`
+      `/api/${window.localStorage.getItem("userId")}`
     );
     this.setState({ user: data });
   }
@@ -80,7 +80,7 @@ class BuyStockForm extends React.Component {
     }
     this.props.addStock();
     const { data } = await axios.get(
-      `/api/${window.sessionStorage.getItem("userId")}`
+      `/api/${window.localStorage.getItem("userId")}`
     );
     this.setState({ user: data });
     this.resetForm();

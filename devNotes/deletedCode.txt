@@ -41,3 +41,29 @@
   //     }
   //   }
   // }
+
+  from main.js (former entry point):
+  // const db = require("./db/db.js");
+// const app = require(".");
+// const PORT = process.env.PORT || 1337;
+
+// const syncDb = () => db.sync();
+
+// async function bootApp() {
+//   await sessionStore.sync();
+//   await syncDb;
+//   console.log("db synced");
+//   app.listen(PORT, () =>
+//     console.log(`studiously serving silly sounds on port ${PORT}`)
+//   );
+// }
+// bootApp();
+
+// previous version:
+// db.sync() // if you update your db schemas, make sure you drop the tables first and then recreate them
+//   .then(() => {
+//     console.log("db synced");
+//     app.listen(PORT, () =>
+//       console.log(`studiously serving silly sounds on port ${PORT}`)
+//     );
+//   });

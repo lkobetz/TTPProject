@@ -6,6 +6,13 @@ const volleyball = require("volleyball");
 var bodyParser = require("body-parser");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
+const db = require("./db/db.js");
+// the following two lines were copied from Grace Shopper. How to incorporate the SequelizeStore both here and in server (main.js)?
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const sessionStore = new SequelizeStore({ db });
+// // the following two lines were copied from Grace Shopper. How to incorporate the SequelizeStore both here and in server (main.js)?
+// const SequelizeStore = require("connect-session-sequelize")(session.Store);
+// const sessionStore = new SequelizeStore({ db });
 // development:
 const { sessionSecret } = require("../secrets");
 // production:
@@ -25,7 +32,9 @@ app.use(
     // even if nothing's changed, save it anyway
     resave: false,
     // saves to database even when server goes down, keeps servers logged in
-    saveUninitialized: true
+    saveUninitialized: true,
+    // this creates a Session table in database so sessions don't need to be stored in memory
+    store: sessionStore
   })
 );
 
@@ -50,5 +59,21 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || "Internal server error");
 });
+
+// server (previously in main.js but moved here to incorporate sequelize session)
+
+const PORT = process.env.PORT || 1337;
+
+const syncDb = () => db.sync();
+
+async function bootApp() {
+  await sessionStore.sync();
+  await syncDb;
+  console.log("db synced");
+  app.listen(PORT, () =>
+    console.log(`studiously serving silly sounds on port ${PORT}`)
+  );
+}
+bootApp();
 
 module.exports = app;

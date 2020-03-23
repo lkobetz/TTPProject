@@ -16,12 +16,13 @@ class NavBar extends React.Component {
     page = parseInt(page.slice(page.indexOf("#") + 2));
     this.setState({ url: page });
     const { data } = await axios.get(
-      `/api/${window.sessionStorage.getItem("userId")}`
+      `/api/${window.localStorage.getItem("userId")}`
     );
     this.setState({ user: data });
   }
   async logout() {
-    await window.sessionStorage.removeItem("userId");
+    await window.localStorage.removeItem("userId");
+    await axios.post("/api/logout");
   }
   render() {
     return (
