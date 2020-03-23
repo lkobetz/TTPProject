@@ -5,3 +5,4 @@
 -sequelize associations must be imported into the seed file to allow eager loading of associated data
 -to seed (or re-seed) heroku database, run 'heroku run bash --app larissa-ttp-project' in bash, then 'npm run seed'
 -can save cookies client-side with document.cookie = "key=value", can access them server-side in express with cookie parser and req.cookies. Can set cookies in express with res.cookie('key', 'value', {options: optional}). Can remove cookie with res.clearCookie('key')
+-session.destroy() needs to be in a post route or it doesn't modify the database

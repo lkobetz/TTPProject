@@ -13,7 +13,10 @@ class UserPortfolio extends React.Component {
     };
     this.addStock = this.addStock.bind(this);
   }
-  async componentDidMount() {
+  componentDidMount() {
+    this.getUpdatedUser();
+  }
+  async getUpdatedUser() {
     // if statement prevents displaying data of most recent user after they log out
     if (window.localStorage.length) {
       // get the user from localStorage so it only displays data of logged in user
@@ -40,11 +43,7 @@ class UserPortfolio extends React.Component {
   }
   // this triggers a component rerender by updating the state
   addStock() {
-    let newStocks = this.state.stocksAdded;
-    newStocks++;
-    this.setState({
-      stocksAdded: newStocks
-    });
+    this.getUpdatedUser();
   }
   render() {
     return (
@@ -59,10 +58,7 @@ class UserPortfolio extends React.Component {
               </h1>
               <div id={"portfolio_body"}>
                 <StockPortfolio user={this.state.user} />
-                <BuyStockForm
-                  userId={this.state.user.id}
-                  addStock={this.addStock}
-                />
+                <BuyStockForm user={this.state.user} addStock={this.addStock} />
               </div>
             </div>
           </div>

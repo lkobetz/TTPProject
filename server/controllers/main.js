@@ -52,8 +52,6 @@ module.exports = {
             // should use cookies so user can stay logged in across tabs/windows
             req.session.user = result;
             req.session.save();
-            console.log("req.session after login:", req.session);
-            // redirect to route that serves user's info (previous transactions)
             if (result.id) {
               res.send(result);
             }
@@ -73,6 +71,7 @@ module.exports = {
       if (req.session) {
         await req.session.destroy();
       }
+      // is this necessary?
       res.redirect("/");
     } catch (err) {
       next(err);

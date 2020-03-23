@@ -8,15 +8,16 @@ class BuyStockForm extends React.Component {
       ticker: "",
       quantity: 0,
       price: 0,
-      user: null
+      user: this.props.user,
+      alert: 0
     };
   }
-  async componentDidMount() {
-    const { data } = await axios.get(
-      `/api/${window.localStorage.getItem("userId")}`
-    );
-    this.setState({ user: data });
-  }
+  // async componentDidMount() {
+  //   const { data } = await axios.get(
+  //     `/api/${window.localStorage.getItem("userId")}`
+  //   );
+  //   this.setState({ user: data });
+  // }
   render() {
     return (
       <div className={"portfolio_item"}>
@@ -50,6 +51,7 @@ class BuyStockForm extends React.Component {
             <button type="submit" className="submit_button">
               Buy
             </button>
+            {this.state.alert === 400 && <h3>Not enough cash!</h3>}
           </form>
         )}
       </div>
@@ -66,6 +68,7 @@ class BuyStockForm extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault();
+    this.setState({ alert: 0 });
     let contains = false;
     for (let i = 0; i < this.state.user.transactions.length; i++) {
       if (this.state.user.transactions[i].name === this.state.ticker) {
@@ -73,12 +76,20 @@ class BuyStockForm extends React.Component {
       }
     }
     // handles the payment
-    if (contains) {
-      await axios.put(`/api/${this.props.userId}`, this.state);
-    } else {
-      await axios.post(`/api/${this.props.userId}`, this.state);
+    try {
+      if (contains) {
+        await axios.put(`/api/${this.props.userId}`, this.state);
+      } else {
+        await axios.post(`/api/${this.props.userId}`, this.state);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        this.setState({ alert: 400 });
+      }
     }
+    // this triggers the UserPortfolio component to rerender
     this.props.addStock();
+    // this rerenders the component because it updates the state with new info
     const { data } = await axios.get(
       `/api/${window.localStorage.getItem("userId")}`
     );

@@ -5,9 +5,6 @@ class SingleStock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: this.props.user,
-      stock: this.props.stock,
-      latestPrice: this.props.stock.latestPrice,
       color: ""
     };
   }
@@ -20,14 +17,15 @@ class SingleStock extends React.Component {
     return data.latestPrice;
   }
   async componentDidMount() {
+    console.log("SingleStock component did mount");
     const newPrice = await this.callApi();
     if (newPrice) {
       this.setState({
         latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
       });
-      if (newPrice < this.state.stock.price) {
+      if (newPrice < this.props.stock.price) {
         this.setState({ color: "#ff0066" });
-      } else if (newPrice > this.state.stock.price) {
+      } else if (newPrice > this.props.stock.price) {
         this.setState({ color: "#00ff00" });
       } else {
         this.setState({ color: "lightgray" });
@@ -45,7 +43,7 @@ class SingleStock extends React.Component {
               color: this.state.color
             }}
           >
-            {this.state.stock.name}
+            {this.props.stock.name}
           </h3>
           <h3
             className={"stock_item"}
@@ -54,7 +52,7 @@ class SingleStock extends React.Component {
               color: this.state.color
             }}
           >
-            {this.state.stock.quantity} Shares
+            {this.props.stock.quantity} Shares
           </h3>
           <h3
             className={"stock_item"}
@@ -72,7 +70,7 @@ class SingleStock extends React.Component {
               color: this.state.color
             }}
           >
-            ${this.state.latestPrice}
+            ${this.props.stock.latestPrice}
           </h3>
         </div>
       </div>
