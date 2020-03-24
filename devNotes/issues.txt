@@ -3,4 +3,5 @@
 -routes can be made more modular using MVC (model view controller) design pattern - finished
 -user should receive messages if login fails - complete
 -when a new user logs in on the same device, the new session overwrites the old session. It would be better if when a user opens a new tab after already starting a session, they are already logged in
--session.destroy() doesn't delete entry from Sessions database
+-session.destroy() doesn't delete entry from Sessions database - fixed by putting logout functionality in its own post route
+-the first time someone tries to log in after starting, req.session.user.id is undefined in controllers/user/showPortfolio line 16. Thought about querying the session database to find the user id in the url, but it doesn't work well with Sequelize because you can't query a nested object

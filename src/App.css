@@ -73,11 +73,14 @@ h4 {
   width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
+  align-items: flex-end;
 }
 
-#transactions_list {
+.transaction_title {
   text-align: center;
+  width: 80%;
+}
+
+.map_transactions {
+  align-self: center;
 }

@@ -13,6 +13,7 @@ module.exports = {
   showPortfolio: async (req, res, next) => {
     try {
       // find the user that's currently on the session and serve up their info, eager load associated transactions
+      // when the first user logs in, the session has no user, rendering req.session.user.id undefined (even though there is a database entry with the relevant user)
       const user = await findUserBySession(req.session.user.id);
       // if this user isn't on the session, access is denied. Effectively, whichever user id you try to go to, you will only be served the info of the user on the session (this way the user can't spy on anyone!)
       if (!user) {

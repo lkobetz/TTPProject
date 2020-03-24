@@ -12,12 +12,6 @@ class BuyStockForm extends React.Component {
       alert: 0
     };
   }
-  // async componentDidMount() {
-  //   const { data } = await axios.get(
-  //     `/api/${window.localStorage.getItem("userId")}`
-  //   );
-  //   this.setState({ user: data });
-  // }
   render() {
     return (
       <div className={"portfolio_item"}>
