@@ -39,7 +39,6 @@ class BuyStockForm extends React.Component {
       }
     } catch (error) {
       if (error.response && error.response.status) {
-        console.log("error.response:", error.response);
         this.setState({ alert: error.response.status });
       }
     }

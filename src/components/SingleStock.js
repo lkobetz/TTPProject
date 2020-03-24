@@ -18,7 +18,6 @@ class SingleStock extends React.Component {
     return data.latestPrice;
   }
   async componentDidMount() {
-    console.log("singleStock component did mount");
     const newPrice = await this.callApi();
     if (newPrice) {
       this.setState({
@@ -72,6 +71,7 @@ class SingleStock extends React.Component {
                 color: this.state.color
               }}
             >
+              {/* must include props here (don't just use componentDidMount to get latestPrice) in order to get the latest price to rerender when props change, ie when a purchase is made */}
               ${(this.props.stock.quantity * this.state.latestPrice).toFixed(2)}
             </h3>
           </div>

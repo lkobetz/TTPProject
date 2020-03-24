@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter, withRouter, Route, Switch } from "react-router-dom";
 // import PropTypes from "prop-types";
-import App from "./App";
-import UserPortfolio from "./UserPortfolio";
-import UserTransactions from "./UserTransactions";
+import App from "./components/App";
+import UserPortfolio from "./components/UserPortfolio";
+import UserTransactions from "./components/UserTransactions";
 
 export default class Routes extends Component {
   componentDidMount() {}

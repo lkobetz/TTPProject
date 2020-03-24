@@ -16,8 +16,6 @@ class UserTransactions extends React.Component {
     this.setState({ user: data });
   }
   render() {
-    if (this.state.user) {
-    }
     return (
       <div className="App">
         {this.state.user && (
@@ -32,7 +30,7 @@ class UserTransactions extends React.Component {
                       {this.state.user.transactions.map(stock => (
                         <div className={"stock"}>
                           <h3 className={"stock_item"}>
-                            {stock.createdAt.slice(0, 9)}
+                            {stock.createdAt.slice(0, 10)}
                           </h3>
                           <h3 className={"stock_item"}>BUY</h3>
                           <h3 className={"stock_item"}>{stock.name}</h3>
