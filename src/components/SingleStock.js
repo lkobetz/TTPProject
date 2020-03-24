@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 class SingleStock extends React.Component {
   constructor(props) {
@@ -9,16 +8,10 @@ class SingleStock extends React.Component {
       latestPrice: 0
     };
   }
-  async callApi() {
-    const { data } = await axios.get(`/api/${this.props.user.id}/apicall`, {
-      params: {
-        ticker: this.props.stock.name
-      }
-    });
-    return data.latestPrice;
-  }
+  // removed callAPI function from here and put it in UserPortfolio
   async componentDidMount() {
-    const newPrice = await this.callApi();
+    // newPrice will have to be passed down as a prop. no need to call API here (it's called above), just find the stock's latestPrice by finding its ticker name in the passed down object
+    const newPrice = this.props.allLatestPrices[this.props.stock.name];
     if (newPrice) {
       this.setState({
         latestPrice: newPrice

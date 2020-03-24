@@ -7,7 +7,12 @@ const StockPortfolio = props => {
       {props.user && (
         <div id={"stock_list"}>
           {props.user.transactions.map(stock => (
-            <SingleStock stock={stock} user={props.user} key={stock.id} />
+            <SingleStock
+              stock={stock}
+              user={props.user}
+              key={stock.id}
+              allLatestPrices={props.allLatestPrices}
+            />
           ))}
         </div>
       )}
