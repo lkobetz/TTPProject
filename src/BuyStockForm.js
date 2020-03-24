@@ -12,6 +12,50 @@ class BuyStockForm extends React.Component {
       alert: 0
     };
   }
+
+  onTickerChange(event) {
+    this.setState({ ticker: event.target.value });
+  }
+
+  onQuantityChange(event) {
+    this.setState({ quantity: event.target.value });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ alert: 0 });
+    let contains = false;
+    for (let i = 0; i < this.state.user.transactions.length; i++) {
+      if (this.state.user.transactions[i].name === this.state.ticker) {
+        contains = true;
+      }
+    }
+    // handles the payment
+    try {
+      if (contains) {
+        await axios.put(`/api/${this.props.userId}`, this.state);
+      } else {
+        await axios.post(`/api/${this.props.userId}`, this.state);
+      }
+    } catch (error) {
+      if (error.response && error.response.status) {
+        console.log("error.response:", error.response);
+        this.setState({ alert: error.response.status });
+      }
+    }
+    // this triggers the UserPortfolio component to rerender
+    this.props.addStock();
+    // this rerenders the component because it updates the state with new info
+    const { data } = await axios.get(
+      `/api/${window.localStorage.getItem("userId")}`
+    );
+    this.setState({ user: data });
+    this.resetForm();
+  }
+  resetForm() {
+    this.setState({ ticker: "", quantity: 0 });
+  }
+
   render() {
     return (
       <div className={"portfolio_item"}>
@@ -46,52 +90,13 @@ class BuyStockForm extends React.Component {
               Buy
             </button>
             {this.state.alert === 400 && <h3>Not enough cash!</h3>}
+            {this.state.alert === 404 && (
+              <h3>Please select a valid ticker symbol</h3>
+            )}
           </form>
         )}
       </div>
     );
-  }
-
-  onTickerChange(event) {
-    this.setState({ ticker: event.target.value });
-  }
-
-  onQuantityChange(event) {
-    this.setState({ quantity: event.target.value });
-  }
-
-  async handleSubmit(event) {
-    event.preventDefault();
-    this.setState({ alert: 0 });
-    let contains = false;
-    for (let i = 0; i < this.state.user.transactions.length; i++) {
-      if (this.state.user.transactions[i].name === this.state.ticker) {
-        contains = true;
-      }
-    }
-    // handles the payment
-    try {
-      if (contains) {
-        await axios.put(`/api/${this.props.userId}`, this.state);
-      } else {
-        await axios.post(`/api/${this.props.userId}`, this.state);
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        this.setState({ alert: 400 });
-      }
-    }
-    // this triggers the UserPortfolio component to rerender
-    this.props.addStock();
-    // this rerenders the component because it updates the state with new info
-    const { data } = await axios.get(
-      `/api/${window.localStorage.getItem("userId")}`
-    );
-    this.setState({ user: data });
-    this.resetForm();
-  }
-  resetForm() {
-    this.setState({ ticker: "", quantity: 0 });
   }
 }
 

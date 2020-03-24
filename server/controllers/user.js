@@ -51,38 +51,32 @@ module.exports = {
     }
   },
   buyStock: async (req, res, next) => {
-    try {
-      // first, get the stock the user wants to buy
-      const tickerSymbol = req.body.ticker;
-      const stock = await apiHelper.make_API_call(tickerSymbol);
-      if (!stock) {
-        res
-          .status(500)
-          .send("unable to retrieve stock information at this time");
+    // took out try / catch because it was interfering with sending error status codes
+    // first, get the stock the user wants to buy
+    const tickerSymbol = req.body.ticker;
+    const stock = await apiHelper.make_API_call(tickerSymbol);
+    if (typeof stock === "string") {
+      res.status(404).send("not a valid ticker symbol");
+    }
+    // next, make sure the user has enough cash to buy the quantity of stock they want:
+    const user = await findUserBySession(req.session.user.id);
+    const totalCost = parseInt(stock.latestPrice) * parseInt(req.body.quantity);
+    // if they have enough money, update their cash
+    if (user.cash >= totalCost) {
+      updateUserCash(user.id, user.cash, totalCost);
+      // then, add the new stock instance to the Transaction table:
+      const newTransaction = addTransaction(
+        req.session.user.id,
+        stock,
+        req.body.quantity
+      );
+      // finally, send back the new transaction
+      if (newTransaction) {
+        res.status(200).send(newTransaction);
       }
-      // next, make sure the user has enough cash to buy the quantity of stock they want:
-      const user = await findUserBySession(req.session.user.id);
-      const totalCost =
-        parseInt(stock.latestPrice) * parseInt(req.body.quantity);
-      // if they have enough money, update their cash
-      if (user.cash >= totalCost) {
-        updateUserCash(user.id, user.cash, totalCost);
-        // then, add the new stock instance to the Transaction table:
-        const newTransaction = addTransaction(
-          req.session.user.id,
-          stock,
-          req.body.quantity
-        );
-        // finally, send back the new transaction
-        if (newTransaction) {
-          res.status(200).send(newTransaction);
-        }
-      } else {
-        // if the user doesn't have enough money, send an error message
-        res.status(400).send("not enough cash!");
-      }
-    } catch (err) {
-      next(err);
+    } else {
+      // if the user doesn't have enough money, send an error message
+      res.status(400).send("not enough cash!");
     }
   },
   updateStockQuantity: async (req, res, next) => {

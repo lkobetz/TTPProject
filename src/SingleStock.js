@@ -18,11 +18,11 @@ class SingleStock extends React.Component {
     return data.latestPrice;
   }
   async componentDidMount() {
-    console.log("SingleStock component did mount");
+    console.log("singleStock component did mount");
     const newPrice = await this.callApi();
     if (newPrice) {
       this.setState({
-        latestPrice: (newPrice * this.props.stock.quantity).toFixed(2)
+        latestPrice: newPrice
       });
       if (newPrice < this.props.stock.price) {
         this.setState({ color: "#ff0066" });
@@ -36,44 +36,46 @@ class SingleStock extends React.Component {
   render() {
     return (
       <div id="stock_container">
-        <div className={"stock"}>
-          <h3
-            className={"stock_item"}
-            style={{
-              textDecoration: "none",
-              color: this.state.color
-            }}
-          >
-            {this.props.stock.name}
-          </h3>
-          <h3
-            className={"stock_item"}
-            style={{
-              textDecoration: "none",
-              color: this.state.color
-            }}
-          >
-            {this.props.stock.quantity} Shares
-          </h3>
-          <h3
-            className={"stock_item"}
-            style={{
-              textDecoration: "none",
-              color: this.state.color
-            }}
-          >
-            =
-          </h3>
-          <h3
-            className={"stock_item"}
-            style={{
-              textDecoration: "none",
-              color: this.state.color
-            }}
-          >
-            ${this.state.latestPrice}
-          </h3>
-        </div>
+        {this.state.latestPrice && (
+          <div className={"stock"}>
+            <h3
+              className={"stock_item"}
+              style={{
+                textDecoration: "none",
+                color: this.state.color
+              }}
+            >
+              {this.props.stock.name}
+            </h3>
+            <h3
+              className={"stock_item"}
+              style={{
+                textDecoration: "none",
+                color: this.state.color
+              }}
+            >
+              {this.props.stock.quantity} Shares
+            </h3>
+            <h3
+              className={"stock_item"}
+              style={{
+                textDecoration: "none",
+                color: this.state.color
+              }}
+            >
+              =
+            </h3>
+            <h3
+              className={"stock_item"}
+              style={{
+                textDecoration: "none",
+                color: this.state.color
+              }}
+            >
+              ${(this.props.stock.quantity * this.state.latestPrice).toFixed(2)}
+            </h3>
+          </div>
+        )}
       </div>
     );
   }
