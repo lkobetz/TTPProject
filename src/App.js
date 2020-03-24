@@ -33,7 +33,7 @@ class App extends React.Component {
     const registerColor = this.state.userType === "new" ? "#6600ff" : "black";
     return (
       <div id="login">
-        <h4>Login or Register to View Your Stock Portfolio</h4>
+        <h3>Login or Register to View Your Stock Portfolio</h3>
         <button
           className={"button"}
           style={{ backgroundColor: registerColor, color: "white" }}

@@ -2,24 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./App.css";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      url: "",
-      user: null
-    };
+    this.state = {};
   }
-  async componentDidMount() {
-    let page = window.location.href.toString();
-    page = parseInt(page.slice(page.indexOf("#") + 2));
-    this.setState({ url: page });
-    const { data } = await axios.get(
-      `/api/${window.localStorage.getItem("userId")}`
-    );
-    this.setState({ user: data });
-  }
+
   async logout() {
     await window.localStorage.removeItem("userId");
     await axios.post("/api/logout");
@@ -27,35 +17,36 @@ class NavBar extends React.Component {
   render() {
     return (
       <div id={"navbar"}>
-        {this.state.user && (
+        {this.props.user && (
           <nav id="navbar">
             <Link
               className={"navbar_link"}
               params={"userPortfolio"}
-              to={`/${this.state.user.id}`}
+              to={`/${this.props.user.id}`}
               style={{
                 textDecoration: "none",
                 color:
-                  this.state.url === `${this.state.user.id}`
+                  this.props.location.pathname === `/${this.props.user.id}`
                     ? "aquamarine"
                     : "#6600ff"
               }}
             >
-              <h5>Portfolio</h5>
+              <h4>Portfolio</h4>
             </Link>{" "}
             <Link
               className={"navbar_link"}
               params={"userTransactions"}
-              to={`/${this.state.user.id}/transactions`}
+              to={`/${this.props.user.id}/transactions`}
               style={{
                 textDecoration: "none",
                 color:
-                  this.state.url === `${this.state.user.id}/transactions`
+                  this.props.location.pathname ===
+                  `/${this.props.user.id}/transactions`
                     ? "aquamarine"
                     : "#6600ff"
               }}
             >
-              <h5>Transactions</h5>
+              <h4>Transactions</h4>
             </Link>
             <Link
               onClick={this.logout}
@@ -67,7 +58,7 @@ class NavBar extends React.Component {
                 color: "#6600ff"
               }}
             >
-              <h5>Logout</h5>
+              <h4>Logout</h4>
             </Link>
           </nav>
         )}
@@ -76,4 +67,4 @@ class NavBar extends React.Component {
   }
 }
 
-export default NavBar;
+export default withRouter(NavBar);

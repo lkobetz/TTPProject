@@ -50,7 +50,7 @@ class UserPortfolio extends React.Component {
       <div className="App">
         {this.state.user && (
           <div>
-            <NavBar />
+            <NavBar user={this.state.user} />
             <div id={"portfolio_container"}>
               <h1 id={"portfolio_header"}>
                 Total Value of {this.state.user.name}'s Stocks: $

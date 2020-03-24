@@ -5,7 +5,8 @@ class SingleStock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      color: ""
+      color: "",
+      latestPrice: 0
     };
   }
   async callApi() {
@@ -70,7 +71,7 @@ class SingleStock extends React.Component {
               color: this.state.color
             }}
           >
-            ${this.props.stock.latestPrice}
+            ${this.state.latestPrice}
           </h3>
         </div>
       </div>

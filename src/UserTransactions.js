@@ -20,7 +20,7 @@ class UserTransactions extends React.Component {
       <div className="App">
         {this.state.user && (
           <div>
-            <NavBar />
+            <NavBar user={this.state.user} />
             <div id={"portfolio_container"}>
               <div id={"portfolio_body"}>
                 <div id={"transaction_container"}>
