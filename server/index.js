@@ -7,12 +7,8 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
 const db = require("./db/db.js");
-// the following two lines were copied from Grace Shopper. How to incorporate the SequelizeStore both here and in server (main.js)?
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const sessionStore = new SequelizeStore({ db });
-// // the following two lines were copied from Grace Shopper. How to incorporate the SequelizeStore both here and in server (main.js)?
-// const SequelizeStore = require("connect-session-sequelize")(session.Store);
-// const sessionStore = new SequelizeStore({ db });
 // development:
 const { sessionSecret } = require("../secrets");
 // production:

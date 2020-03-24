@@ -24,8 +24,6 @@ module.exports = {
             res.status(409).send("User already exists");
           } else {
             registerUser(req.body).then(result => {
-              // should use cookies so user can stay logged in across tabs/windows
-              // should save the session in the database so we can make a single loginUser function for both register and login routes
               req.session.user = result;
               req.session.save();
               // redirects to a route that serves the logged in user's info (will be blank since they just registered)
@@ -49,7 +47,6 @@ module.exports = {
       } else {
         findUserByEmailAndPass(req.body).then(result => {
           if (result) {
-            // should use cookies so user can stay logged in across tabs/windows
             req.session.user = result;
             req.session.save();
             if (result.id) {
@@ -66,8 +63,6 @@ module.exports = {
   },
   logout: async (req, res, next) => {
     try {
-      // this is supposed to log the user out if they return to the login page (the logout button sends them here)
-      // it doesn't seem to actually log the user out though until their id is removed from localStorage on the client side
       if (req.session) {
         await req.session.destroy();
       }

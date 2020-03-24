@@ -1,7 +1,7 @@
--memory leak in production mode due to express sessions - sometimes when a pre-existing user tries to register again, the previously logged in user's info is displayed. Solved by redirecting the login route to the user's page from the database, not from the session.
--after user makes a purchase, page needs to be refreshed to view most recent data. Can NOT solve this by calling API in componentDidUpdate because it create an infinite(?) loop of API calls
--routes can be made more modular using MVC (model view controller) design pattern - finished
--user should receive messages if login fails - complete
--when a new user logs in on the same device, the new session overwrites the old session. It would be better if when a user opens a new tab after already starting a session, they are already logged in
--session.destroy() doesn't delete entry from Sessions database - fixed by putting logout functionality in its own post route
+-SOLVED: memory leak in production mode due to express sessions - sometimes when a pre-existing user tries to register again, the previously logged in user's info is displayed. Solved by redirecting the login route to the user's page from the database, not from the session.
+-SOLVED: after user makes a purchase, page needs to be refreshed to view most recent data. Can NOT solve this by calling API in componentDidUpdate because it create an infinite(?) loop of API calls. Solved by passing updated props and NOT saving them to the state (in which case they don't rerender because initial state is only set once)
+-SOLVED: routes can be made more modular using MVC (model view controller) design pattern
+-SOLVED: user should receive messages if login fails
+-SOLVED: when a new user logs in on the same device, the new session overwrites the old session. It would be better if when a user opens a new tab after already starting a session, they are already logged in. Solved by using localStorage instead of sessionStorage on client side.
+-SOLVED: session.destroy() doesn't delete entry from Sessions database - fixed by putting logout functionality in its own post route
 -the first time someone tries to log in after starting, req.session.user.id is undefined in controllers/user/showPortfolio line 16. Thought about querying the session database to find the user id in the url, but it doesn't work well with Sequelize because you can't query a nested object

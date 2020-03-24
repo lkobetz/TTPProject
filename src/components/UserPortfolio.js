@@ -8,8 +8,7 @@ class UserPortfolio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
-      stocksAdded: 0
+      user: null
     };
     this.addStock = this.addStock.bind(this);
   }
