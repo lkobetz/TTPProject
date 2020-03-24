@@ -10,9 +10,9 @@ const db = require("./db/db.js");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const sessionStore = new SequelizeStore({ db });
 // development:
-const { sessionSecret } = require("../secrets");
+// const { sessionSecret } = require("../secrets");
 // production:
-// const sessionSecret = process.env.sessionSecret;
+const sessionSecret = process.env.sessionSecret;
 
 const app = express();
 

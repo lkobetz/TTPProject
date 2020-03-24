@@ -4,9 +4,9 @@ const request = require("request");
 // test is mounted on: https://sandbox.iexapis.com/
 
 // development:
-const { tpApiToken } = require("../../secrets");
+// const { tpApiToken } = require("../../secrets");
 // production:
-// const tpApiToken = process.env.pApiToken;
+const tpApiToken = process.env.pApiToken;
 
 module.exports = {
   /*
