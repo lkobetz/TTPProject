@@ -6,7 +6,6 @@ class BuyStockForm extends React.Component {
     super(props);
     this.state = {
       ticker: "",
-      quantity: 0,
       price: 0,
       user: this.props.user,
       alert: 0
@@ -38,18 +37,21 @@ class BuyStockForm extends React.Component {
         await axios.post(`/api/${this.props.userId}`, this.state);
       }
     } catch (error) {
+      console.log("error.response.status:", error.response.status);
       if (error.response && error.response.status) {
         this.setState({ alert: error.response.status });
       }
     }
     // this triggers the UserPortfolio component to rerender
-    this.props.addStock();
-    // this rerenders the component because it updates the state with new info
-    const { data } = await axios.get(
-      `/api/${window.localStorage.getItem("userId")}`
-    );
-    this.setState({ user: data });
-    this.resetForm();
+    if (!this.state.alert) {
+      this.props.addStock();
+      // this rerenders the component because it updates the state with new info
+      const { data } = await axios.get(
+        `/api/${window.localStorage.getItem("userId")}`
+      );
+      this.setState({ user: data });
+      this.resetForm();
+    }
   }
   resetForm() {
     this.setState({ ticker: "", quantity: 0 });
