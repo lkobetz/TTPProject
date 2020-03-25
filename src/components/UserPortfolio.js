@@ -10,7 +10,8 @@ class UserPortfolio extends React.Component {
     this.state = {
       user: null,
       allLatestPrices: {},
-      totalStockValue: 0
+      totalStockValue: 0,
+      readyToRender: false
     };
     this.addStock = this.addStock.bind(this);
   }
@@ -19,7 +20,8 @@ class UserPortfolio extends React.Component {
     const result = await this.getPriceOfAllStocks();
     this.setState({
       allLatestPrices: result.latestPrices,
-      totalStockValue: result.totalStockValue
+      totalStockValue: result.totalStockValue,
+      readyToRender: true
     });
   }
   async getUpdatedUser() {
@@ -63,19 +65,27 @@ class UserPortfolio extends React.Component {
     return data.latestPrice;
   }
   // this triggers a component rerender by updating the state
-  addStock() {
-    this.getUpdatedUser();
+  async addStock() {
+    // we don't want the component to rerender until we've gotten the updated user and updated the latestPrices object though, because otherwise if this is the user's first purchase it will send an empty object to SingleStock
+    this.setState({ readyToRender: false });
+    await this.getUpdatedUser();
+    const result = await this.getPriceOfAllStocks();
+    this.setState({
+      allLatestPrices: result.latestPrices,
+      totalStockValue: result.totalStockValue,
+      readyToRender: true
+    });
   }
   render() {
     return (
       <div className="App">
-        {this.state.user && this.state.totalStockValue && (
+        {this.state.readyToRender ? (
           <div>
             <NavBar user={this.state.user} />
             <div id={"portfolio_container"}>
               <h1 id={"portfolio_header"}>
                 Total Value of {this.state.user.name}'s Stocks: $
-                {this.state.totalStockValue}
+                {this.state.totalStockValue || 0}
               </h1>
               <div id={"portfolio_body"}>
                 <StockPortfolio
@@ -86,6 +96,8 @@ class UserPortfolio extends React.Component {
               </div>
             </div>
           </div>
+        ) : (
+          <h2 id={"loading"}>Loading...</h2>
         )}
       </div>
     );

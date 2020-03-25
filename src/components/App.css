@@ -11,6 +11,10 @@ h4 {
   font-family: "Anonymous Pro";
 }
 
+Link > h3 {
+  color: "#6600ff"
+}
+
 #navbar {
   display: flex;
   justify-content: flex-end
@@ -27,6 +31,19 @@ h4 {
 
 .button {
   margin: 1%;
+}
+
+#welcome_text {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#welcome_links {
+  display: flex;
+  width: 30%;
+  align-self: center;
+  justify-content: space-around;
 }
 
 #portfolio_container {
@@ -83,4 +100,9 @@ h4 {
 
 .map_transactions {
   align-self: center;
+}
+
+#loading {
+  text-align: center;
+  margin-top: 5%;
 }

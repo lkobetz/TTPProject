@@ -27,7 +27,7 @@ module.exports = {
               req.session.user = result;
               req.session.save();
               // redirects to a route that serves the logged in user's info (will be blank since they just registered)
-              if (result.id) {
+              if (req.session.user) {
                 res.send(result);
               }
             });

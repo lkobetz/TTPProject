@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import { Redirect } from "react-router-dom";
 import Login from "./Login";
+import { Link } from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
@@ -33,31 +33,42 @@ class App extends React.Component {
     const registerColor = this.state.userType === "new" ? "#6600ff" : "black";
     return (
       <div id="login">
-        <h3>Login or Register to View Your Stock Portfolio</h3>
-        <button
-          className={"button"}
-          style={{ backgroundColor: registerColor, color: "white" }}
-          onClick={() => this.toggleFunc("new")}
-        >
-          Register
-        </button>
-        <button
-          className={"button"}
-          style={{ backgroundColor: loginColor, color: "white" }}
-          onClick={() => this.toggleFunc("existing")}
-        >
-          Login
-        </button>
-        {this.state.toggle && (
-          <Login userType={this.state.userType} changeUser={this.changeUser} />
-        )}
-        {this.state.user && (
-          <Redirect
-            to={{
-              pathname: `/${this.state.user.id}`,
-              state: { user: this.state.user }
-            }}
-          ></Redirect>
+        {this.state.user === null ? (
+          <div>
+            <h3>Login or Register to View Your Stock Portfolio</h3>
+            <button
+              className={"button"}
+              style={{ backgroundColor: registerColor, color: "white" }}
+              onClick={() => this.toggleFunc("new")}
+            >
+              Register
+            </button>
+            <button
+              className={"button"}
+              style={{ backgroundColor: loginColor, color: "white" }}
+              onClick={() => this.toggleFunc("existing")}
+            >
+              Login
+            </button>
+            {this.state.toggle && (
+              <Login
+                userType={this.state.userType}
+                changeUser={this.changeUser}
+              />
+            )}
+          </div>
+        ) : (
+          <div id={"welcome_text"}>
+            <h1>Welcome, {this.state.user.name}!</h1>
+            <div id={"welcome_links"}>
+              <Link to={`/${this.state.user.id}`}>
+                <h3>View Portfolio</h3>
+              </Link>
+              <Link to={`/${this.state.user.id}/transactions`}>
+                <h3>View Transactions</h3>
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     );
