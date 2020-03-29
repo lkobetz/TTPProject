@@ -31,9 +31,14 @@ class Login extends React.Component {
         const response = await axios.post("/api/register", this.state);
         this.resetForm();
         if (response.status === 200) {
-          const id = response.data.id;
-          await window.localStorage.setItem("userId", id);
-          this.props.changeUser(response.data);
+          // exclude unnecessary info (like email) from user data because we don't need access to them on the front end and we don't want to accidentally expose them
+          const user = {
+            id: response.data.id,
+            name: response.data.name,
+            transactions: response.data.transactions
+          };
+          await window.localStorage.setItem("userId", user.id);
+          this.props.changeUser(user);
         }
       } catch (error) {
         if (error.response) {
@@ -52,7 +57,13 @@ class Login extends React.Component {
         if (response.status === 200) {
           const id = response.data.id;
           await window.localStorage.setItem("userId", id);
-          this.props.changeUser(response.data);
+          // exclude unnecessary info (like email) from user data because we don't need access to them on the front end and we don't want to accidentally expose them
+          const user = {
+            id: response.data.id,
+            name: response.data.name
+          };
+          await window.localStorage.setItem("userId", user.id);
+          this.props.changeUser(user);
         }
       } catch (error) {
         if (error.response) {

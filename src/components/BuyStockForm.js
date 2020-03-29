@@ -37,7 +37,6 @@ class BuyStockForm extends React.Component {
         await axios.post(`/api/${this.props.userId}`, this.state);
       }
     } catch (error) {
-      console.log("error.response.status:", error.response.status);
       if (error.response && error.response.status) {
         this.setState({ alert: error.response.status });
       }
@@ -49,7 +48,11 @@ class BuyStockForm extends React.Component {
       const { data } = await axios.get(
         `/api/${window.localStorage.getItem("userId")}`
       );
-      this.setState({ user: data });
+      const userData = {
+        cash: data.cash,
+        transactions: data.transactions
+      };
+      this.setState({ user: userData });
       this.resetForm();
     }
   }

@@ -31,15 +31,22 @@ class UserPortfolio extends React.Component {
       const { data } = await axios.get(
         `/api/${window.localStorage.getItem("userId")}`
       );
-      this.setState({ user: data });
+      // here we just make sure we're not saving any user info we don't need on the front end
+      const user = {
+        name: data.name,
+        id: data.id,
+        cash: data.cash,
+        transactions: data.transactions
+      };
+      this.setState({ user: user });
     }
   }
   async getPriceOfAllStocks() {
-    // this should also create an object of ticker: latestPrice to be passed down as a prop to StockPortfolio -> SingleStock
     let totalsOfEach = [];
     let latestPrices = {};
     if (this.state.user && this.state.user.transactions.length) {
       await Promise.all(
+        // this function reduces the sum of latestPrices of all bought stocks into a total value to display at the top, also adds the latest price of each stock to an object to pass to the SingleStock component so it can render it
         this.state.user.transactions.map(async stock => {
           let latestPrice = await this.callApi(stock.name);
           totalsOfEach.push(latestPrice * stock.quantity);
@@ -64,7 +71,7 @@ class UserPortfolio extends React.Component {
     });
     return data.latestPrice;
   }
-  // this triggers a component rerender by updating the state
+  // this triggers a component rerender by updating the state, is called in BuyStockForm when the user buys a new stock
   async addStock() {
     // we don't want the component to rerender until we've gotten the updated user and updated the latestPrices object though, because otherwise if this is the user's first purchase it will send an empty object to SingleStock
     this.setState({ readyToRender: false });
